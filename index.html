@@ -352,18 +352,39 @@ var SCENES=[
   cast:["tommy"],threads:[],art:svgScene(bg([['#1a1d22',200],['#2a2d30',160],['#3a3d40',200]])+ground(360,'#3a3d40')+'<g fill="#5a5e62" opacity="0.5"><ellipse cx="340" cy="382" rx="200" ry="50"/></g>'+moon(540,90,22,'#cdd2c4')+horse(380,430,'#e8e6df',true)+'<g fill="#15110e"><polygon points="360,386 380,386 384,408 356,408"/><rect x="363" y="370" width="15" height="15"/><rect x="359" y="365" width="23" height="6"/></g>')}
 ];
 var THREADS=[
+ {id:"changretta",nameZh:"Changretta 血仇",nameEn:"The Changretta vendetta",color:"#d6452f",
+  pinIds:["pin-grace","pin-luca","pin-john"],beatIds:["s3-grace","s4-luca","s4-john","s4-mp"],
+  noteZh:"John 弄瞎 Angel → Vicente 杀 Grace → Arthur 杀 Vicente → Luca 杀 John → Arthur 杀 Luca。",noteEn:"John blinds Angel → Vicente kills Grace → Arthur kills Vicente → Luca kills John → Arthur kills Luca."},
  {id:"sapphire",nameZh:"被诅咒的蓝宝石",nameEn:"The cursed sapphire",color:"#3e8bd0",
-  pinIds:["pin-grace","pin-ruby"],beatIds:["s3-grace","s6-ruby"],
-  noteZh:"格蕾丝的项链辗转克死七岁的康妮,诅咒应验在鲁比身上。",noteEn:"Grace's necklace kills seven-year-old Connie, and the curse comes due on Ruby."}
+  pinIds:["pin-grace","pin-sapphire","pin-ruby"],beatIds:["s3-grace","s6-curse","s6-ruby"],
+  noteZh:"Grace 的项链辗转克死七岁的康妮,诅咒应验在鲁比身上。",noteEn:"Grace's necklace kills seven-year-old Connie; the curse comes due on Ruby."},
+ {id:"bullet",nameZh:"Polly 的子弹",nameEn:"Polly's bullet",color:"#e0a82f",
+  pinIds:["pin-campbell","pin-polly"],beatIds:["s1-campbell","s2-polly"],
+  noteZh:"Campbell 的觊觎与强暴 → Polly 的复仇枪。",noteEn:"Campbell's predation → Polly's revenge."},
+ {id:"leak",nameZh:"Billy Grade 的电话",nameEn:"Billy Grade's phone call",color:"#9a6cd0",
+  pinIds:["pin-billygrade","pin-swing","pin-aberama"],beatIds:["s5-plot","s5-fog","s6-bodies"],
+  noteZh:"Finn 走漏 → Billy 告密 IRA → Polly/Aberama/Barney 之死。",noteEn:"Finn lets slip → Billy tips the IRA → the deaths of Polly, Aberama and Barney."},
+ {id:"ghosts",nameZh:"汤米的两片雾",nameEn:"Tommy's two fogs",color:"#7aa0a8",
+  pinIds:["pin-grace","pin-ruby"],beatIds:["s5-fog","s6-finale"],
+  noteZh:"雾中幻见 Grace(崩溃)↔ 雾中 Ruby 鬼魂(重生)——首尾呼应的两场田野戏。",noteEn:"Hallucinating Grace in the fog (collapse) ↔ Ruby's ghost in the fog (rebirth)."}
 ];
 var BOARD_PINS=[
- {id:"pin-tommy",kind:"photo",ref:"tommy",x:50,y:46,rot:-2,tack:"#c0352a"},
- {id:"pin-grace",kind:"photo",ref:"grace",x:26,y:24,rot:3,tack:"#d9cdb0"},
- {id:"pin-polly",kind:"photo",ref:"polly",x:16,y:62,rot:-3,tack:"#b8862b"},
- {id:"pin-campbell",kind:"photo",ref:"campbell",x:14,y:28,rot:2,tack:"#37475c"},
- {id:"pin-ruby",kind:"photo",ref:"ruby",x:76,y:72,rot:-2,tack:"#cf6b86"},
- {id:"pin-guns",kind:"event",ref:"s1-guns",x:74,y:30,rot:2,tack:"#2c2c2c"},
- {id:"pin-finale",kind:"event",ref:"s6-finale",x:86,y:58,rot:-3,tack:"#c2592a"}
+ {id:"pin-tommy",kind:"photo",ref:"tommy",x:50,y:44,rot:-2,tack:"#c0352a"},
+ {id:"pin-grace",kind:"photo",ref:"grace",x:32,y:20,rot:3,tack:"#d9cdb0"},
+ {id:"pin-arthur",kind:"photo",ref:"arthur",x:46,y:24,rot:-3,tack:"#b8862b"},
+ {id:"pin-polly",kind:"photo",ref:"polly",x:20,y:40,rot:2,tack:"#b8862b"},
+ {id:"pin-john",kind:"photo",ref:"john",x:39,y:68,rot:-2,tack:"#c0352a"},
+ {id:"pin-ada",kind:"photo",ref:"ada",x:19,y:66,rot:3,tack:"#b8862b"},
+ {id:"pin-michael",kind:"photo",ref:"michael",x:59,y:67,rot:-3,tack:"#b8862b"},
+ {id:"pin-campbell",kind:"photo",ref:"campbell",x:12,y:23,rot:2,tack:"#37475c"},
+ {id:"pin-alfie",kind:"photo",ref:"alfie",x:80,y:21,rot:-3,tack:"#b8862b"},
+ {id:"pin-luca",kind:"photo",ref:"luca",x:87,y:44,rot:3,tack:"#1c1c1c"},
+ {id:"pin-mosley",kind:"photo",ref:"mosley",x:66,y:21,rot:-2,tack:"#1c1c1c"},
+ {id:"pin-aberama",kind:"photo",ref:"aberama",x:85,y:67,rot:2,tack:"#b8862b"},
+ {id:"pin-billygrade",kind:"photo",ref:"billygrade",x:62,y:46,rot:-3,tack:"#9a6cd0"},
+ {id:"pin-swing",kind:"photo",ref:"swing",x:74,y:46,rot:3,tack:"#9a6cd0"},
+ {id:"pin-ruby",kind:"photo",ref:"ruby",x:72,y:72,rot:-2,tack:"#cf6b86"},
+ {id:"pin-sapphire",kind:"event",ref:"s6-curse",x:47,y:74,rot:2,tack:"#3e8bd0"}
 ];
 var T={
  start:{zh:"按下开始",en:"Press start"},
@@ -418,7 +439,7 @@ function __selftest(){
   var ord=beatsInOrder();
   ok(ord[0]==="prologue"&&ord[ord.length-1]==="finale-end","时间序应 prologue→终幕");
   var to=threadOrder("sapphire");
-  ok(to.length===2&&to[0]==="s3-grace"&&to[1]==="s6-ruby","蓝宝石暗线序应 grace→ruby");
+  ok(to.length>=2&&to[0]==="s3-grace"&&to[to.length-1]==="s6-ruby","蓝宝石暗线序应 grace→ruby");
   return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
 }
 /* === 渲染 === */
@@ -499,11 +520,12 @@ function filterThread(thId){
  renderStrings(thId);
 }
 function setLang(l){lang=l;state.lang=l;save();renderBoard();}
+function threadsForScene(id){ var r=[]; THREADS.forEach(function(t){ if(t.beatIds.indexOf(id)>-1) r.push(t.id); }); return r; }
 var curBeat=null;
 function openDossier(sceneId){
  var s=sceneById(sceneId); if(!s)return; curBeat=sceneId;
  var cast=(s.cast||[]).map(function(id){var c=charById(id);return '<span class="chip">'+(lang==="zh"?c.nameZh:c.nameEn)+'</span>';}).join("");
- var ths=(s.threads||[]).map(function(id){var th=THREADS.filter(function(x){return x.id===id;})[0];
+ var ths=threadsForScene(sceneId).map(function(id){var th=THREADS.filter(function(x){return x.id===id;})[0];
   return th? '<span class="chip" style="background:'+th.color+';color:#fff;border-color:'+th.color+'">'+(lang==="zh"?th.nameZh:th.nameEn)+'</span>':"";}).join("");
  var d=document.getElementById("dossier");
  d.innerHTML='<div class="dz"><div class="dz-top"><span class="dz-no">'+t("caseFile")+' '+s.no+'</span>'
