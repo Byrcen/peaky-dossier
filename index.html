@@ -16,6 +16,10 @@ html,body{margin:0;background:#0c0a08;color:#e9dcc3;font-family:var(--serif)}
 .threads{display:flex;flex-wrap:wrap;gap:6px}
 .thb{font-family:var(--stencil);font-size:12px;color:#cdbfa3;background:#241b12;border:1px solid #4a3a28;border-radius:6px;padding:5px 9px;cursor:pointer;display:flex;align-items:center;gap:6px}
 .thb.active{color:#1a130c;background:var(--brass);border-color:var(--brass)}
+.sb{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:0 10px 8px;background:#17120d;border-left:1px solid var(--frame);border-right:1px solid var(--frame)}
+.sb .sblab{font-family:var(--type);font-size:11px;color:#8a7a5a;margin-right:4px}
+.sgb{font-family:var(--type);font-size:12px;color:#cdbfa3;background:#1f1810;border:1px solid #4a3a28;border-radius:5px;padding:4px 11px;cursor:pointer}
+.sgb.active{color:#1a130c;background:#cdbfa3;border-color:#cdbfa3}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .lang{display:flex;border:1px solid #4a3a28;border-radius:6px;overflow:hidden}
 .lang button{font-family:var(--serif);font-size:12px;color:#cdbfa3;background:#241b12;border:none;padding:5px 11px;cursor:pointer}
@@ -476,8 +480,10 @@ function renderBoard(){
  var thbtns='<button class="thb" data-th="all">'+t("allThreads")+'</button>'+THREADS.map(function(th){
   return '<button class="thb" data-th="'+th.id+'"><span class="dot" style="background:'+th.color+'"></span>'+(lang==="zh"?th.nameZh:th.nameEn)+'</button>';
  }).join("");
+ var sgbtns=[1,2,3,4,5,6].map(function(n){return '<button class="sgb" data-s="'+n+'">S'+n+'</button>';}).join("");
  el.innerHTML='<div class="cb"><div class="threads">'+thbtns+'</div>'
   +'<div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div>'
+  +'<div class="sb"><span class="sblab">'+(lang==="zh"?"按季":"By series")+'</span>'+sgbtns+'</div>'
   +'<div class="bwrap" id="bwrap"><div class="bframe"></div><svg class="strings" id="strings"></svg><div id="pinlayer"></div></div>';
  var pl=el.querySelector("#pinlayer");
  BOARD_PINS.forEach(function(p){
@@ -489,6 +495,7 @@ function renderBoard(){
  });
  el.querySelectorAll(".thb").forEach(function(b){b.addEventListener("click",function(){filterThread(b.dataset.th);});});
  el.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.l);});});
+ el.querySelectorAll(".sgb").forEach(function(b){b.addEventListener("click",function(){filterSeason(parseInt(b.dataset.s,10));});});
  wireResize();
  filterThread(state.lastThread||"all");
 }
@@ -512,12 +519,22 @@ function renderStrings(thId){
 var _resizeWired=false;
 function wireResize(){ if(_resizeWired)return; _resizeWired=true; window.addEventListener("resize",function(){ if(document.getElementById("bwrap")) renderStrings(state.lastThread||"all"); }); }
 function filterThread(thId){
- state.lastThread=thId; save();
+ state.lastThread=thId; state.season=null; save();
  document.querySelectorAll(".thb").forEach(function(b){b.classList.toggle("active",b.dataset.th===thId);});
+ document.querySelectorAll(".sgb").forEach(function(b){b.classList.remove("active");});
  var m=pinsForThread(thId);
  document.querySelectorAll(".pin").forEach(function(el){var on=thId==="all"||m[el.dataset.pin];
   el.classList.toggle("dim",thId!=="all"&&!on);el.classList.toggle("act",thId!=="all"&&!!on);});
  renderStrings(thId);
+}
+function filterSeason(sn){
+ state.season=sn; state.lastThread=null; save();
+ document.querySelectorAll(".sgb").forEach(function(b){b.classList.toggle("active",parseInt(b.dataset.s,10)===sn);});
+ document.querySelectorAll(".thb").forEach(function(b){b.classList.remove("active");});
+ BOARD_PINS.forEach(function(p){ var el=document.querySelector('.pin[data-pin="'+p.id+'"]'); if(!el)return;
+  var inS=(p.kind==="photo")?(charById(p.ref).seasons.indexOf(sn)>-1):(sceneById(p.ref).season===sn);
+  el.classList.toggle("dim",!inS); el.classList.remove("act"); });
+ renderStrings("none");
 }
 function setLang(l){lang=l;state.lang=l;save();renderBoard();}
 function threadsForScene(id){ var r=[]; THREADS.forEach(function(t){ if(t.beatIds.indexOf(id)>-1) r.push(t.id); }); return r; }
