@@ -36,6 +36,23 @@ html,body{margin:0;background:#0c0a08;color:#e9dcc3;font-family:var(--serif)}
 .lensplay:hover{background:#9a2519}
 .pin .seen{position:absolute;top:-8px;right:-8px;width:19px;height:19px;border-radius:50%;background:#3b7a4a;color:#eafff0;font-size:12px;line-height:19px;text-align:center;z-index:5;border:1px solid #1f4a2a}
 .thb .seen{color:#7bd08c;margin-left:2px}
+.mapbtn{font-family:var(--stencil);font-size:12px;color:#1a130c;background:#cdbfa3;border:1px solid #cdbfa3;border-radius:6px;padding:5px 11px;cursor:pointer}
+.mapbtn:hover{background:#dccfa8}
+.rm{width:580px;max-width:100%;max-height:500px;overflow:auto;background:var(--manila);border:1px solid #9a865d;border-radius:6px;font-family:var(--serif)}
+.rm-top{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;background:#241a10;color:#f3e4c6;padding:10px 14px;font-family:var(--stencil)}
+.rm-x{background:none;border:none;color:#caa64a;font-size:18px;cursor:pointer}
+.rm-b{padding:12px 16px 18px;color:#2f2316}
+.rm-h{font-family:var(--stencil);font-size:13px;color:#7c1f17;border-bottom:1px solid #c2b083;padding-bottom:4px;margin:0 0 10px}
+.ftree,.ftree ul{list-style:none;margin:0;padding:0}
+.ftree ul{margin-left:16px;border-left:1px solid #b6a47a;padding-left:14px}
+.ftree li{margin:5px 0}
+.fnode{font-size:14px;color:#2f2316}
+.fnode.froot{font-weight:700;font-size:15px}
+.rel{font-family:var(--type);font-size:11px;color:#8a6a3a;margin-left:5px}
+.facgrp{margin-bottom:11px}
+.fachd{font-family:var(--stencil);font-size:13px;margin-bottom:5px}
+.facmem{display:flex;flex-wrap:wrap;gap:5px}
+.facm{font-size:12px;color:#2f2316;background:#e6d7b0;border:1px solid;border-radius:4px;padding:2px 8px}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .lang{display:flex;border:1px solid #4a3a28;border-radius:6px;overflow:hidden}
 .lang button{font-family:var(--serif);font-size:12px;color:#cdbfa3;background:#241b12;border:none;padding:5px 11px;cursor:pointer}
@@ -139,7 +156,18 @@ function windowsRow(y,h,xs,w,col){ var s=''; for(var i=0;i<xs.length;i++){ s+='<
 var FACTIONS=[
  {id:"peaky",nameZh:"浴血黑帮",nameEn:"Peaky Blinders",color:"#caa64a"},
  {id:"crown",nameZh:"王权/警方",nameEn:"Crown & Police",color:"#37475c"},
- {id:"curse",nameZh:"诅咒/吉普赛",nameEn:"Romani / curse",color:"#3e8bd0"}
+ {id:"curse",nameZh:"诅咒/吉普赛",nameEn:"Romani / curse",color:"#3e8bd0"},
+ {id:"rival",nameZh:"敌对帮派",nameEn:"Rival gangs",color:"#d6452f"},
+ {id:"fascist",nameZh:"法西斯",nameEn:"Fascists",color:"#9aa0a8"},
+ {id:"left",nameZh:"左翼/工运",nameEn:"Communists",color:"#c0603a"}
+];
+var FAMILY=[
+ {c:"polly",rel:{zh:"姑妈·女家长",en:"aunt, matriarch"},sub:[{c:"michael",rel:{zh:"子",en:"son"}}]},
+ {c:"arthur",rel:{zh:"长兄",en:"eldest"},sub:[{c:"linda",rel:{zh:"妻",en:"wife"}}]},
+ {c:"tommy",rel:{zh:"主角",en:"protagonist"},sub:[{c:"grace",rel:{zh:"妻 †",en:"wife †"}},{c:"lizzie",rel:{zh:"妻",en:"wife"}},{c:"charlie",rel:{zh:"子",en:"son"}},{c:"ruby",rel:{zh:"女 †",en:"daughter †"}},{c:"duke",rel:{zh:"私生子",en:"son"}}]},
+ {c:"john",rel:{zh:"三弟 †",en:"brother †"}},
+ {c:"ada",rel:{zh:"妹",en:"sister"},sub:[{c:"freddie",rel:{zh:"夫 †",en:"husband †"}}]},
+ {c:"finn",rel:{zh:"幼弟",en:"youngest"}}
 ];
 var CHARACTERS=[
  {id:"tommy",nameZh:"汤米·谢尔比",nameEn:"Tommy Shelby",faction:"peaky",seasons:[1,2,3,4,5,6],portrait:"flatcap",
@@ -499,7 +527,7 @@ function renderBoard(){
  }).join("");
  var sgbtns=[1,2,3,4,5,6].map(function(n){return '<button class="sgb" data-s="'+n+'">S'+n+'</button>';}).join("");
  el.innerHTML='<div class="cb"><div class="threads">'+thbtns+'</div>'
-  +'<div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div>'
+  +'<div style="display:flex;gap:8px;align-items:center"><button class="mapbtn">'+(lang==="zh"?"关系图谱":"The web")+'</button><div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div></div>'
   +'<div class="sb"><span class="sblab">'+(lang==="zh"?"按季":"By series")+'</span>'+sgbtns+'</div>'
   +'<div class="bwrap" id="bwrap"><div class="bframe"></div><svg class="strings" id="strings"></svg><div id="pinlayer"></div><button class="lensplay hidden" id="lensplay"></button></div>';
  var pl=el.querySelector("#pinlayer");
@@ -513,6 +541,7 @@ function renderBoard(){
  });
  el.querySelectorAll(".thb").forEach(function(b){b.addEventListener("click",function(){filterThread(b.dataset.th);});});
  el.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.l);});});
+ el.querySelector(".mapbtn").addEventListener("click",openRelMap);
  el.querySelectorAll(".sgb").forEach(function(b){b.addEventListener("click",function(){filterSeason(parseInt(b.dataset.s,10));});});
  wireResize();
  filterThread(state.lastThread||"all");
@@ -599,6 +628,24 @@ function openDossier(sceneId){
  d.querySelector(".dz-go").onclick=function(){closeDossier();playLens([curBeat],(lang==="zh"?s.titleZh:s.titleEn));};
 }
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
+function renderFamilyNode(node){
+ var c=charById(node.c); var nm=c?(lang==="zh"?c.nameZh:c.nameEn):node.c;
+ var rel=node.rel?(' <span class="rel">'+(lang==="zh"?node.rel.zh:node.rel.en)+'</span>'):'';
+ var subs=node.sub&&node.sub.length? '<ul>'+node.sub.map(renderFamilyNode).join("")+'</ul>':'';
+ return '<li><span class="fnode">'+nm+rel+'</span>'+subs+'</li>';
+}
+function openRelMap(){
+ var fam='<ul class="ftree"><li><span class="fnode froot">'+(lang==="zh"?"谢尔比家":"The Shelbys")+'</span><ul>'+FAMILY.map(renderFamilyNode).join("")+'</ul></li></ul>';
+ var facs=FACTIONS.map(function(f){ var ms=CHARACTERS.filter(function(c){return c.faction===f.id;}); if(!ms.length)return"";
+  return '<div class="facgrp"><div class="fachd" style="color:'+f.color+'">'+(lang==="zh"?f.nameZh:f.nameEn)+'</div><div class="facmem">'+ms.map(function(c){return '<span class="facm" style="border-color:'+f.color+'">'+(lang==="zh"?c.nameZh:c.nameEn)+'</span>';}).join("")+'</div></div>'; }).join("");
+ var d=document.getElementById("dossier");
+ d.innerHTML='<div class="rm"><div class="rm-top"><span>'+(lang==="zh"?"关系图谱":"The web")+'</span><button class="rm-x" aria-label="close">&times;</button></div>'
+  +'<div class="rm-b"><div class="rm-h">'+(lang==="zh"?"谢尔比家族树":"Shelby family tree")+'</div>'+fam
+  +'<div class="rm-h" style="margin-top:16px">'+(lang==="zh"?"帮派势力":"Factions")+'</div>'+facs+'</div></div>';
+ d.classList.remove("hidden");
+ d.onclick=function(e){if(e.target===d)closeDossier();};
+ d.querySelector(".rm-x").onclick=closeDossier;
+}
 function propSvg(k){
  if(k=="cap") return '<polygon points="5,30 5,25 16,16 33,16 40,23 40,30" fill="#2e2620"/><rect x="3" y="30" width="38" height="4" fill="#15100a"/><rect x="29" y="20" width="9" height="3" fill="#e3bb50"/>';
  if(k=="gun") return '<rect x="5" y="19" width="27" height="7" fill="#33333a"/><rect x="25" y="24" width="8" height="13" fill="#2a2a30"/><rect x="30" y="16" width="7" height="4" fill="#e3bb50"/>';
