@@ -301,7 +301,13 @@ function renderScene(sceneId){
  el.querySelector(".sc-next").onclick=function(){stepScene(1);};
  requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("in");});});
 }
-function setView(v){var b=document.getElementById("board"),s=document.getElementById("scene");if(v==="scene"){b.classList.add("hidden");s.classList.remove("hidden");}else{s.classList.add("hidden");b.classList.remove("hidden");}}
+var view="board";
+function setView(v){
+ view=v;
+ var b=document.getElementById("board"),s=document.getElementById("scene");
+ if(v==="scene"){ b.classList.add("hidden"); s.classList.remove("hidden"); }
+ else { s.classList.add("hidden"); s.classList.remove("in"); b.classList.remove("hidden"); }
+}
 function stepScene(d){console.log("step",d);}
 function boot(){ load(); renderBoard(); document.getElementById("title").classList.add("hidden"); document.getElementById("board").classList.remove("hidden"); }
 boot();
