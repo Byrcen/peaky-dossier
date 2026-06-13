@@ -66,7 +66,17 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
 .t-sub{font-family:var(--stencil);font-size:14px;letter-spacing:2px;color:#caa64a;margin-bottom:28px}
 .t-start{font-family:var(--stencil);font-size:16px;color:#1a130c;background:var(--brass);border:none;border-radius:6px;padding:12px 26px;cursor:pointer;letter-spacing:1px}
 .t-resume{display:block;margin-top:14px;font-family:var(--type);font-size:13px;color:#cbb78c;background:none;border:none;cursor:pointer;text-decoration:underline}
-@media (prefers-reduced-motion: reduce){.sc-art,#scene.in .sc-art,.sc-cap,#scene.in .sc-cap{transition:none!important;transform:none!important;opacity:1!important}}
+.sc-prop{position:absolute;z-index:7;width:56px;height:56px;transform:translate(-50%,-50%);cursor:pointer}
+.sc-prop svg{width:56px;height:56px;display:block;position:relative;z-index:2;transition:transform .2s;background:rgba(8,6,4,.5);border-radius:50%;box-shadow:0 0 0 2px rgba(227,187,80,.55),0 2px 7px rgba(0,0,0,.6)}
+.sc-prop:hover svg{transform:scale(1.18)}
+.sc-prop .halo{position:absolute;inset:-9px;border-radius:50%;border:2px solid #e3bb50;z-index:1;animation:propPulse 1.9s ease-out infinite}
+@keyframes propPulse{0%{transform:scale(.65);opacity:.75}70%{opacity:0}100%{transform:scale(1.5);opacity:0}}
+.sc-prop .lab{position:absolute;bottom:64px;left:50%;transform:translateX(-50%);white-space:nowrap;font-family:var(--type);font-size:12px;color:#1a130c;background:#e3bb50;padding:3px 9px;border-radius:4px;opacity:0;transition:opacity .2s;pointer-events:none}
+.sc-prop:hover .lab{opacity:1}
+.sc-prev2{position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:6;font-size:34px;line-height:1;color:#caa64a;opacity:.28;cursor:pointer;background:none;border:none;padding:6px 10px}
+.sc-prev2:hover{opacity:.75}
+.sc-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:6;font-family:var(--type);font-size:12px;color:#cbb78c;opacity:.55;pointer-events:none}
+@media (prefers-reduced-motion: reduce){.sc-art,#scene.in .sc-art,.sc-cap,#scene.in .sc-cap{transition:none!important;transform:none!important;opacity:1!important}.sc-prop .halo{animation:none!important;opacity:.5!important}}
 </style>
 </head>
 <body>
@@ -240,7 +250,8 @@ var T={
  prev:{zh:"上一幕",en:"Previous"},
  next:{zh:"下一幕",en:"Next"},
  appears:{zh:"出场",en:"Appears"},
- resume:{zh:"继续上次",en:"Resume"}
+ resume:{zh:"继续上次",en:"Resume"},
+ propHint:{zh:"点击场景中发光的物件 · 进入下一幕",en:"Click the glowing object to go on"}
 };
 /* === 纯逻辑 === */
 var lang="zh";
@@ -383,6 +394,39 @@ function openDossier(sceneId){
  d.querySelector(".dz-go").onclick=function(){navMode="time";navThread=null;closeDossier();openScene(curBeat);};
 }
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
+function propSvg(k){
+ if(k=="cap") return '<polygon points="5,30 5,25 16,16 33,16 40,23 40,30" fill="#2e2620"/><rect x="3" y="30" width="38" height="4" fill="#15100a"/><rect x="29" y="20" width="9" height="3" fill="#e3bb50"/>';
+ if(k=="gun") return '<rect x="5" y="19" width="27" height="7" fill="#33333a"/><rect x="25" y="24" width="8" height="13" fill="#2a2a30"/><rect x="30" y="16" width="7" height="4" fill="#e3bb50"/>';
+ if(k=="bullet") return '<rect x="18" y="14" width="9" height="20" fill="#b8902e"/><polygon points="18,14 27,14 22.5,5" fill="#e8cc6a"/>';
+ if(k=="gem") return '<polygon points="22,6 37,20 22,40 7,20" fill="#3e8bd0"/><polygon points="22,6 37,20 22,20" fill="#7ab4e8"/><polygon points="7,20 22,20 22,40" fill="#2c6aa6"/>';
+ if(k=="match") return '<rect x="20" y="14" width="4" height="26" fill="#c8a884"/><circle cx="22" cy="11" r="7" fill="#e0651f"/><circle cx="22" cy="9" r="3" fill="#f2b134"/>';
+ if(k=="bottle") return '<rect x="16" y="16" width="13" height="23" rx="2" fill="#3a5a3a"/><rect x="19" y="6" width="7" height="11" fill="#2e4a2e"/><rect x="18" y="22" width="9" height="11" fill="#caa64a" opacity="0.45"/>';
+ if(k=="glass") return '<polygon points="12,14 32,14 27,28 17,28" fill="#caa64a" opacity="0.75"/><rect x="20" y="27" width="4" height="9" fill="#8a6a2a"/><rect x="13" y="36" width="18" height="3" fill="#8a6a2a"/>';
+ if(k=="flag") return '<rect x="11" y="6" width="4" height="32" fill="#3a2a1e"/><polygon points="15,8 38,8 31,17 38,26 15,26" fill="#a3231d"/>';
+ if(k=="key") return '<circle cx="14" cy="22" r="8" fill="none" stroke="#e3bb50" stroke-width="3"/><rect x="20" y="20" width="19" height="4" fill="#e3bb50"/><rect x="34" y="24" width="4" height="7" fill="#e3bb50"/>';
+ if(k=="badge") return '<polygon points="22,5 27,16 39,16 29,24 33,37 22,29 11,37 15,24 5,16 17,16" fill="#aeb6bf"/><circle cx="22" cy="21" r="4" fill="#6a7078"/>';
+ if(k=="horseshoe") return '<path d="M12,38 A13,13 0 1,1 32,38" fill="none" stroke="#e3bb50" stroke-width="6"/><circle cx="12" cy="38" r="2" fill="#2e2620"/><circle cx="32" cy="38" r="2" fill="#2e2620"/>';
+ if(k=="glove") return '<rect x="12" y="18" width="20" height="19" rx="7" fill="#7a2420"/><rect x="27" y="15" width="9" height="11" rx="4" fill="#7a2420"/><rect x="12" y="33" width="20" height="4" fill="#5a1712"/>';
+ return '<circle cx="22" cy="22" r="10" fill="#e3bb50"/>';
+}
+var PROP_MAP={
+ "prologue":{kind:"cap",x:50,y:44,lz:"剃刀帽",le:"the razor cap"},
+ "s1-guns":{kind:"gun",x:50,y:40,lz:"失窃的枪",le:"a stolen gun"},
+ "s1-campbell":{kind:"badge",x:62,y:42,lz:"警徽",le:"the badge"},
+ "s1-grace":{kind:"glass",x:64,y:40,lz:"一杯威士忌",le:"a glass of whisky"},
+ "s1-freddie":{kind:"flag",x:25,y:26,lz:"红旗",le:"the red flag"},
+ "s1-kimber":{kind:"horseshoe",x:50,y:30,lz:"马蹄铁",le:"a horseshoe"},
+ "s1-showdown":{kind:"bullet",x:54,y:30,lz:"弹壳",le:"a spent casing"},
+ "s2-garrison":{kind:"match",x:52,y:34,lz:"火柴",le:"a match"},
+ "s2-alfie":{kind:"bottle",x:32,y:42,lz:"朗姆酒",le:"a bottle of rum"},
+ "s2-sabini":{kind:"glove",x:62,y:28,lz:"拳套",le:"a boxing glove"},
+ "s2-michael":{kind:"key",x:52,y:34,lz:"钥匙",le:"a key"},
+ "s2-epsom":{kind:"gun",x:50,y:32,lz:"手枪",le:"the pistol"},
+ "s2-polly":{kind:"gun",x:44,y:34,lz:"冒烟的左轮",le:"a smoking revolver"},
+ "s3-grace":{kind:"gem",x:50,y:26,lz:"蓝宝石",le:"the sapphire"},
+ "s6-ruby":{kind:"gem",x:52,y:34,lz:"被诅咒的宝石",le:"the cursed stone"},
+ "s6-finale":{kind:"match",x:30,y:40,lz:"点火的火柴",le:"the match"}
+};
 function seasonLabel(s){var z=["序幕","第一季","第二季","第三季","第四季","第五季","第六季","终幕"][s];
  var e=["Prologue","Series 1","Series 2","Series 3","Series 4","Series 5","Series 6","Finale"][s];
  return (lang==="zh"?z:e);}
@@ -390,15 +434,19 @@ function openScene(sceneId){ curBeat=sceneId; state.lastBeat=sceneId; state.visi
  setView("scene"); renderScene(sceneId); }
 function renderScene(sceneId){
  var s=sceneById(sceneId),el=document.getElementById("scene");
+ var pm=PROP_MAP[sceneId]||{kind:"cap",x:50,y:66,lz:"继续",le:"continue"};
+ var o=currentOrder(),i=o.indexOf(curBeat),hasPrev=i>0;
  el.classList.remove("in");
  el.innerHTML='<div class="sc-art">'+s.art+'</div><div class="sc-scrim"></div><div class="sc-lb t"></div><div class="sc-lb b"></div>'
   +'<div class="sc-tag">'+seasonLabel(s.season)+' · '+s.year+'</div><div class="sc-num">'+s.no+'</div>'
   +'<div class="sc-cap"><p class="sc-big">'+(lang==="zh"?s.titleZh:s.titleEn)+'</p><p class="sc-small">'+(lang==="zh"?s.taleZh:s.taleEn)+'</p></div>'
   +'<button class="sc-back">&#9664; '+t("backBoard")+'</button>'
-  +'<div class="sc-nav"><button class="sc-prev">'+t("prev")+'</button><button class="sc-next">'+t("next")+'</button></div>';
+  +(hasPrev?'<button class="sc-prev2" aria-label="prev">&#8249;</button>':'')
+  +'<div class="sc-prop" style="left:'+pm.x+'%;top:'+pm.y+'%"><div class="halo"></div><svg viewBox="0 0 44 44">'+propSvg(pm.kind)+'</svg><div class="lab">'+(lang==="zh"?pm.lz:pm.le)+' &#8594;</div></div>'
+  +'<div class="sc-hint">'+t("propHint")+'</div>';
  el.querySelector(".sc-back").onclick=function(){setView("board");};
- el.querySelector(".sc-prev").onclick=function(){stepScene(-1);};
- el.querySelector(".sc-next").onclick=function(){stepScene(1);};
+ var pv=el.querySelector(".sc-prev2"); if(pv)pv.onclick=function(){stepScene(-1);};
+ el.querySelector(".sc-prop").onclick=function(){ var oo=currentOrder(),ii=oo.indexOf(curBeat); if(ii>=0&&ii<oo.length-1) stepScene(1); else setView("board"); };
  requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("in");});});
 }
 var view="board";
