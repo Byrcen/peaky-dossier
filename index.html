@@ -182,6 +182,10 @@ function __selftest(){
   ok(state.lang==="en","load 应恢复 lang");
   var _o=JSON.parse(_bs); for(var _k in state) delete state[_k]; for(var _k2 in _o) state[_k2]=_o[_k2]; lang=state.lang;
   if(_bk===null) localStorage.removeItem("pbd"); else localStorage.setItem("pbd",_bk);
+  var ord=beatsInOrder();
+  ok(ord[0]==="prologue"&&ord[ord.length-1]==="s6-finale","时间序应 prologue→finale");
+  var to=threadOrder("sapphire");
+  ok(to.length===2&&to[0]==="s3-grace"&&to[1]==="s6-ruby","蓝宝石暗线序应 grace→ruby");
   return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
 }
 /* === 渲染 === */
@@ -280,7 +284,7 @@ function openDossier(sceneId){
  d.classList.remove("hidden");
  d.onclick=function(e){if(e.target===d)closeDossier();};
  d.querySelector(".dz-x").onclick=closeDossier;
- d.querySelector(".dz-go").onclick=function(){closeDossier();openScene(curBeat);};
+ d.querySelector(".dz-go").onclick=function(){navMode="time";navThread=null;closeDossier();openScene(curBeat);};
 }
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
 function seasonLabel(s){var z=["序幕","第一季","第二季","第三季","第四季","第五季","第六季","终幕"][s];
@@ -308,7 +312,14 @@ function setView(v){
  if(v==="scene"){ b.classList.add("hidden"); s.classList.remove("hidden"); }
  else { s.classList.add("hidden"); s.classList.remove("in"); b.classList.remove("hidden"); }
 }
-function stepScene(d){console.log("step",d);}
+function beatsInOrder(){ return SCENES.map(function(s){return s.id;}); }
+function threadOrder(thId){ var th=THREADS.filter(function(x){return x.id===thId;})[0]; return th?th.beatIds.slice():[]; }
+var navMode="time", navThread=null;
+function currentOrder(){ return (navMode==="thread"&&navThread)? threadOrder(navThread) : beatsInOrder(); }
+function stepScene(d){
+ var o=currentOrder(),i=o.indexOf(curBeat); if(i<0){i=beatsInOrder().indexOf(curBeat);o=beatsInOrder();}
+ var n=i+d; if(n<0||n>=o.length)return; openScene(o[n]);
+}
 function boot(){ load(); renderBoard(); document.getElementById("title").classList.add("hidden"); document.getElementById("board").classList.remove("hidden"); }
 boot();
 </script>
