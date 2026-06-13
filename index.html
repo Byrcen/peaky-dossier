@@ -189,7 +189,17 @@ var CHARACTERS=[
  {id:"billygrade",nameZh:"比利·格雷德",nameEn:"Billy Grade",faction:"rival",seasons:[5,6],portrait:"cap",
   roleZh:"内鬼",roleEn:"The informant",bioZh:"被 Finn 走漏消息的足球教头,向 IRA 告密、酿成大祸。",bioEn:"The fixer Finn lets slip to, who tips off the IRA — with fatal results."},
  {id:"swing",nameZh:"斯温上尉",nameEn:"Captain Swing",faction:"rival",seasons:[5,6],portrait:"woman",
-  roleZh:"IRA 头目",roleEn:"IRA leader",bioZh:"破坏行刺、送回三具尸体的 IRA 头目。",bioEn:"The IRA leader who sabotages the plot and returns three bodies."}
+  roleZh:"IRA 头目",roleEn:"IRA leader",bioZh:"破坏行刺、送回三具尸体的 IRA 头目。",bioEn:"The IRA leader who sabotages the plot and returns three bodies."},
+ {id:"nelson",nameZh:"杰克·尼尔森",nameEn:"Jack Nelson",faction:"rival",seasons:[6],portrait:"fedora",
+  roleZh:"波士顿大佬",roleEn:"Boston boss",bioZh:"吉娜的舅舅、波士顿的权势人物,汤米鸦片生意的对手。",bioEn:"Gina's uncle and a Boston powerbroker; Tommy's partner-rival in the opium trade."},
+ {id:"diana",nameZh:"戴安娜·米特福德",nameEn:"Diana Mitford",faction:"fascist",seasons:[6],portrait:"woman",
+  roleZh:"莫斯利的新娘",roleEn:"Mosley's bride",bioZh:"与莫斯利成婚的上流法西斯名媛。",bioEn:"The high-society fascist who marries Mosley."},
+ {id:"holford",nameZh:"霍尔福德医生",nameEn:"Dr. Holford",faction:"fascist",seasons:[6],portrait:"fedora",
+  roleZh:"被收买的医生",roleEn:"The bought doctor",bioZh:"被莫斯利收买、谎称汤米将死的医生。",bioEn:"The doctor Mosley buys to tell Tommy he is dying."},
+ {id:"evadne",nameZh:"伊瓦德妮·巴威尔",nameEn:"Evadne Barwell",faction:"curse",seasons:[6],portrait:"woman",
+  roleZh:"下诅咒的吉普赛",roleEn:"The curse-layer",bioZh:"以蓝宝石诅咒汤米失去七岁女儿的吉普赛女人。",bioEn:"The Romani woman who curses Tommy to lose his daughter at seven."},
+ {id:"duke",nameZh:"杜克·谢尔比",nameEn:"Duke Shelby",faction:"peaky",seasons:[6],portrait:"cap",
+  roleZh:"汤米的私生子",roleEn:"Tommy's son",bioZh:"汤米新认的私生子,终局替芬恩动了手。",bioEn:"Tommy's newly revealed illegitimate son, who acts in Finn's place at the end."}
 ];
 var SCENES=[
  {id:"prologue",season:0,no:"00",year:"1919",titleZh:"凭浴血黑帮之名",titleEn:"By order of the Peaky Blinders",
@@ -312,14 +322,34 @@ var SCENES=[
   taleZh:"行刺崩盘:Barney 被狙杀、阿贝拉马被刺死;汤米独立雾中田野,幻见亡妻 Grace,枪口抵住自己的太阳穴。",
   taleEn:"The plot collapses — Barney shot, Aberama stabbed; alone in a foggy field Tommy sees his dead wife Grace and lifts the pistol to his own temple.",
   cast:["tommy","grace","barney","aberama"],threads:[],art:SVG_RUBY()},
+ {id:"s6-bodies",season:6,no:"30",year:"1933",titleZh:"三具尸体",titleEn:"Three bodies",
+  taleZh:"四年后开场:IRA 报复行刺失败,把波莉、阿贝拉马、Barney 的尸体送回。波莉于罗姆大篷车火葬。",
+  taleEn:"Four years on: the IRA, in revenge for the failed plot, return the bodies of Polly, Aberama and Barney. Polly is cremated in a Romani caravan.",
+  cast:["polly","aberama","swing","tommy"],threads:[],art:svgScene(bg([['#1a160f',300],['#0e0a06',260]])+ground(340,'#100b06')+'<g fill="#2a1d12"><rect x="240" y="200" width="200" height="120" rx="10"/><rect x="220" y="300" width="240" height="20"/></g>'+'<circle cx="270" cy="240" r="12" fill="#1a1208"/><circle cx="410" cy="240" r="12" fill="#1a1208"/>'+fire(340,340,2.2)+smoke(340,180,1.6))},
+ {id:"s6-boston",season:6,no:"31",year:"1933",titleZh:"戒酒与波士顿局",titleEn:"Sober, and Boston",
+  taleZh:"戒了酒的汤米用政治情报换 Jack Nelson 的波士顿鸦片生意,纠缠 IRA;迈克尔记恨波莉之死,起了弑兄之心。",
+  taleEn:"Sober now, Tommy trades political intelligence for Jack Nelson's Boston opium trade, entangled with the IRA; Michael, blaming him for Polly, plots to kill him.",
+  cast:["tommy","nelson","michael","gina"],threads:[],art:svgScene(bg([['#1a2028',300],['#0e1216',260]])+'<rect y="340" width="680" height="220" fill="#0e1216"/>'+'<g fill="#0a0c10"><rect x="380" y="120" width="240" height="220"/><polygon points="380,120 500,82 620,120"/></g>'+'<g fill="#2a2418"><rect x="120" y="280" width="60" height="60" rx="4"/><rect x="190" y="290" width="60" height="50" rx="4"/></g>'+moon(120,90,18,'#cdd2c4')+figS(280,470,'fedora',2.6,'#0a0807'))},
+ {id:"s6-curse",season:6,no:"32",year:"1933",titleZh:"蓝宝石的诅咒",titleEn:"The cursed sapphire",
+  taleZh:"那条 Grace 的蓝宝石几经辗转,克死了 Barwell 家七岁的康妮;Evadne 以此诅咒汤米——也将失去七岁的女儿。",
+  taleEn:"Grace's sapphire passes hand to hand and kills seven-year-old Connie Barwell; Evadne curses Tommy to lose his own daughter at seven.",
+  cast:["tommy","evadne"],threads:[],art:svgScene(bg([['#1a1620',300],['#0e0a10',260]])+ground(340,'#120e16')+'<g fill="#2a1d12"><rect x="420" y="220" width="160" height="100" rx="8"/></g>'+fire(480,320,1.3)+'<polygon points="280,198 298,220 280,246 262,220" fill="#3e8bd0"/><ellipse cx="280" cy="222" rx="22" ry="26" fill="#3e8bd0" opacity="0.25"/>'+figS(180,470,'woman',2.5,'#0a0807'))},
  {id:"s6-ruby",season:6,no:"33",year:"1933",titleZh:"鲁比之死",titleEn:"Ruby's death",
   taleZh:"诅咒应验。汤米的女儿鲁比染肺结核夭折;悲恸之下他血洗了下诅咒的营地。",
   taleEn:"The curse comes due. Tommy's daughter Ruby dies of consumption; in grief he massacres the camp that cursed her.",
-  cast:["tommy","ruby"],threads:["sapphire"],art:SVG_RUBY()},
+  cast:["tommy","ruby"],threads:["sapphire"],art:svgScene(bg([['#1c1a1e',360],['#0e0c10',200]])+ground(360,'#100e12')+'<rect x="220" y="280" width="240" height="70" rx="6" fill="#2a2028"/><rect x="220" y="250" width="50" height="40" fill="#241a22"/><rect x="280" y="262" width="120" height="20" fill="#3a2e34"/>'+'<line x1="150" y1="220" x2="150" y2="300" stroke="#2a2018" stroke-width="6"/><circle cx="150" cy="212" r="7" fill="#e0a64e"/>'+'<g fill="#caa64a" opacity="0.13"><circle cx="150" cy="212" r="40"/></g>')},
+ {id:"s6-diagnosis",season:6,no:"34",year:"1934",titleZh:"假死之局",titleEn:"The false diagnosis",
+  taleZh:"莫斯利买通霍尔福德医生,谎称汤米患「结核瘤」将死、诱他自尽;另一头,亚瑟戒毒归来,芬恩被逐出家门。",
+  taleEn:"Mosley buys Dr. Holford to tell Tommy a 'tuberculoma' will kill him, hoping he ends himself; meanwhile Arthur kicks his habit and Finn is cast out.",
+  cast:["tommy","holford","mosley","arthur","finn"],threads:[],art:svgScene(bg([['#16181c',360],['#0a0c0e',200]])+ground(360,'#0c0e10')+'<rect x="260" y="120" width="160" height="200" fill="#1a1e22"/>'+'<g fill="#cdd2d8" opacity="0.45"><circle cx="340" cy="190" r="34"/><rect x="322" y="220" width="36" height="44"/></g>'+figS(220,470,'fedora',2.4,'#0a0807')+figS(440,470,'cap',2.3,'#0a0807'))},
  {id:"s6-finale",season:6,no:"35",year:"1934",titleZh:"烈火与重生",titleEn:"Fire and rebirth",
   taleZh:"他识破了假死的诅咒。火烧 Arrow House,骑上白马遁入晨雾——汤米·谢尔比还活着。",
   taleEn:"He sees through the lie of his own death. Arrow House burns; he rides a white horse into the mist — Tommy Shelby is still alive.",
-  cast:["tommy"],threads:[],art:SVG_FINALE()}
+  cast:["tommy"],threads:[],art:SVG_FINALE()},
+ {id:"finale-end",season:7,no:"——",year:"194?",titleZh:"不朽之人",titleEn:"The Immortal Man",
+  taleZh:"二战的阴云压向英格兰。汤米·谢尔比骑马遁入晨雾——他还活着,故事尚未终结。待续。",
+  taleEn:"The shadow of the Second World War falls over England. Tommy Shelby rides into the mist — still alive, the story not yet over. To be continued.",
+  cast:["tommy"],threads:[],art:svgScene(bg([['#1a1d22',200],['#2a2d30',160],['#3a3d40',200]])+ground(360,'#3a3d40')+'<g fill="#5a5e62" opacity="0.5"><ellipse cx="340" cy="382" rx="200" ry="50"/></g>'+moon(540,90,22,'#cdd2c4')+horse(380,430,'#e8e6df',true)+'<g fill="#15110e"><polygon points="360,386 380,386 384,408 356,408"/><rect x="363" y="370" width="15" height="15"/><rect x="359" y="365" width="23" height="6"/></g>')}
 ];
 var THREADS=[
  {id:"sapphire",nameZh:"被诅咒的蓝宝石",nameEn:"The cursed sapphire",color:"#3e8bd0",
@@ -386,7 +416,7 @@ function __selftest(){
   var _o=JSON.parse(_bs); for(var _k in state) delete state[_k]; for(var _k2 in _o) state[_k2]=_o[_k2]; lang=state.lang;
   if(_bk===null) localStorage.removeItem("pbd"); else localStorage.setItem("pbd",_bk);
   var ord=beatsInOrder();
-  ok(ord[0]==="prologue"&&ord[ord.length-1]==="s6-finale","时间序应 prologue→finale");
+  ok(ord[0]==="prologue"&&ord[ord.length-1]==="finale-end","时间序应 prologue→终幕");
   var to=threadOrder("sapphire");
   ok(to.length===2&&to[0]==="s3-grace"&&to[1]==="s6-ruby","蓝宝石暗线序应 grace→ruby");
   return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
@@ -540,6 +570,11 @@ var PROP_MAP={
  "s5-plot":{kind:"gun",x:50,y:26,lz:"狙击枪",le:"the sniper rifle"},
  "s5-traitor":{kind:"phone",x:50,y:30,lz:"告密的电话",le:"the informant's call"},
  "s5-fog":{kind:"gun",x:62,y:28,lz:"抵住头的枪",le:"gun to the head"},
+ "s6-bodies":{kind:"cross",x:62,y:30,lz:"火葬的十字架",le:"the funeral cross"},
+ "s6-boston":{kind:"coin",x:40,y:34,lz:"波士顿的交易",le:"the Boston deal"},
+ "s6-curse":{kind:"gem",x:40,y:28,lz:"被诅咒的蓝宝石",le:"the cursed sapphire"},
+ "s6-diagnosis":{kind:"bottle",x:60,y:28,lz:"医生的药瓶",le:"the doctor's vial"},
+ "finale-end":{kind:"cap",x:50,y:30,lz:"故事待续 · 回到卷宗",le:"to be continued — to the board"},
  "s6-ruby":{kind:"gem",x:52,y:34,lz:"被诅咒的宝石",le:"the cursed stone"},
  "s6-finale":{kind:"match",x:30,y:40,lz:"点火的火柴",le:"the match"}
 };
