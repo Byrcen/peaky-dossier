@@ -157,7 +157,17 @@ var CHARACTERS=[
  {id:"russell",nameZh:"亨利·罗素元帅",nameEn:"F.M. Henry Russell",faction:"crown",seasons:[2],portrait:"fedora",
   roleZh:"刺杀目标",roleEn:"Assassination target",bioZh:"与黑棕部队、科克暴行相关的陆军元帅,坎贝尔逼汤米刺杀的目标。",bioEn:"A Field Marshal tied to the Black and Tans; the target Campbell forces Tommy to kill."},
  {id:"lizzie",nameZh:"莉齐·斯塔克",nameEn:"Lizzie Stark",faction:"peaky",seasons:[2,3,4,5,6],portrait:"woman",
-  roleZh:"后成汤米之妻",roleEn:"Later Tommy's wife",bioZh:"从风尘到谢尔比夫人、鲁比的母亲;终离汤米而去。",bioEn:"From the streets to Mrs Shelby and Ruby's mother; she finally leaves Tommy."}
+  roleZh:"后成汤米之妻",roleEn:"Later Tommy's wife",bioZh:"从风尘到谢尔比夫人、鲁比的母亲;终离汤米而去。",bioEn:"From the streets to Mrs Shelby and Ruby's mother; she finally leaves Tommy."},
+ {id:"hughes",nameZh:"约翰·休斯神父",nameEn:"Father John Hughes",faction:"crown",seasons:[3],portrait:"fedora",
+  roleZh:"经济联盟的神父",roleEn:"Priest of the Economic League",bioZh:"经济联盟的神父打手,侵害过童年迈克尔,绑架汤米幼子作要挟。",bioEn:"A priest-enforcer of the Economic League who abused a young Michael and kidnaps Tommy's infant son."},
+ {id:"tatiana",nameZh:"塔季扬娜公主",nameEn:"Tatiana Petrovna",faction:"crown",seasons:[3],portrait:"woman",
+  roleZh:"白俄公主",roleEn:"White Russian princess",bioZh:"流亡白俄的公主、汤米的接头人与情人,阴谋的共谋者。",bioEn:"An exiled White Russian princess; Tommy's contact, lover and co-conspirator."},
+ {id:"izabella",nameZh:"伊莎贝拉女公爵",nameEn:"Grand Duchess Izabella",faction:"crown",seasons:[3],portrait:"woman",
+  roleZh:"白俄阴谋主脑",roleEn:"Ringleader of the plot",bioZh:"流亡白俄的女公爵,推翻苏维埃阴谋的主脑。",bioEn:"The exiled Grand Duchess driving the conspiracy to topple the Soviets."},
+ {id:"linda",nameZh:"琳达·谢尔比",nameEn:"Linda Shelby",faction:"peaky",seasons:[3,4,5,6],portrait:"woman",
+  roleZh:"亚瑟之妻",roleEn:"Arthur's wife",bioZh:"虔诚而强势的亚瑟之妻,想把丈夫拉出黑帮。",bioEn:"Arthur's devout, forceful wife, who tries to pull him out of the life."},
+ {id:"charlie",nameZh:"查理·谢尔比",nameEn:"Charles Shelby",faction:"peaky",seasons:[3,4,5,6],portrait:"child",
+  roleZh:"汤米之子",roleEn:"Tommy's son",bioZh:"汤米与 Grace 的儿子,曾被休斯神父绑架。",bioEn:"Tommy and Grace's son, once kidnapped by Father Hughes."}
 ];
 var SCENES=[
  {id:"prologue",season:0,no:"00",year:"1919",titleZh:"凭浴血黑帮之名",titleEn:"By order of the Peaky Blinders",
@@ -212,10 +222,30 @@ var SCENES=[
   taleZh:"墓坑边的假处决,丘吉尔的人反杀同伙放过汤米;波莉一枪结果坎贝尔,为被强暴复仇。Grace 怀着汤米的孩子归来。",
   taleEn:"At a dug grave a turncoat spares Tommy for Churchill; Polly shoots Campbell dead in revenge for her assault. Grace returns, pregnant with Tommy's child.",
   cast:["polly","campbell","tommy","grace"],threads:["bullet"],art:svgScene(bg([['#1a1814',360],['#0e0b08',200]])+'<rect x="280" y="120" width="120" height="280" fill="#15120c"/><rect x="288" y="130" width="104" height="180" fill="#2a2418"/>'+figS(250,452,'woman',2.5,'#0a0807')+figS(420,452,'police',2.4,'#0a0807')+'<circle cx="300" cy="400" r="10" fill="#cf3a2a"/><circle cx="300" cy="400" r="4" fill="#f2d27a"/>')},
+ {id:"s3-wedding",season:3,no:"13",year:"1924",titleZh:"庄园婚礼",titleEn:"The Arrow House wedding",
+  taleZh:"汤米娶了 Grace,入住庄园 Arrow House;婚礼上一名俄国奸细对错了暗号,被当场处决——血溅婚日。",
+  taleEn:"Tommy marries Grace and moves into Arrow House; at the wedding a Russian agent gives the wrong code word and is executed on the spot — blood on the wedding day.",
+  cast:["tommy","grace","arthur"],threads:[],art:svgScene(bg([['#2a2018',360],['#160f0a',200]])+windowsRow(80,190,[70,250,440],90,'#3a2c1a')+ground(360,'#1c140d')+'<g fill="#caa64a" opacity="0.4"><circle cx="200" cy="80" r="6"/><circle cx="480" cy="80" r="6"/></g>'+figS(300,452,'cap',2.5,'#0a0807')+figS(372,452,'woman',2.4,'#e9ddc4')+'<rect x="190" y="432" width="40" height="11" fill="#5a1712"/>')},
+ {id:"s3-russia",season:3,no:"14",year:"1924",titleZh:"白俄阴谋",titleEn:"The White Russian conspiracy",
+  taleZh:"汤米卷入流亡白俄 Petrovna 一家(女公爵 Izabella 主谋、公主 Tatiana 接头)与经济联盟神父 John Hughes 的阴谋。",
+  taleEn:"Tommy is drawn into the plot of the exiled Petrovnas — Grand Duchess Izabella and Princess Tatiana — and the Economic League's Father John Hughes.",
+  cast:["tommy","tatiana","izabella","hughes"],threads:[],art:svgScene(bg([['#1a1620',360],['#0e0a10',200]])+windowsRow(90,180,[80,470],80,'#241c2a')+ground(360,'#120e16')+'<g fill="#caa64a" opacity="0.35"><circle cx="340" cy="60" r="8"/></g>'+'<ellipse cx="340" cy="300" rx="14" ry="20" fill="#caa64a" opacity="0.4"/>'+figS(290,452,'woman',2.4,'#0a0807')+figS(400,452,'fedora',2.5,'#0a0807'))},
  {id:"s3-grace",season:3,no:"15",year:"1924",titleZh:"慈善晚宴的子弹",titleEn:"The bullet at the gala",
   taleZh:"『For Angel!』枪声响起。射向汤米的子弹,击中了格蕾丝。她正戴着那条被诅咒的蓝宝石。",
   taleEn:"'For Angel!' — a single shot. The bullet meant for Tommy finds Grace instead. She is wearing the cursed sapphire.",
   cast:["tommy","grace"],threads:["sapphire"],art:SVG_GRACE()},
+ {id:"s3-tunnel",season:3,no:"16",year:"1924",titleZh:"隧道劫宝",titleEn:"The tunnel heist",
+  taleZh:"汤米掘穿河底隧道盗走 Petrovna 家的珍宝(法贝热彩蛋),又搅黄了俄国装甲列车的军火交易——列车在终幕爆炸。",
+  taleEn:"Tommy tunnels under the river to rob the Petrovnas' treasures (a Fabergé egg) and wrecks the Russian armoured-train arms deal — the train explodes.",
+  cast:["tommy","arthur","tatiana"],threads:[],art:svgScene(bg([['#14110e',240],['#2a1810',120],['#0a0806',200]])+'<rect y="300" width="680" height="40" fill="#1a1610"/>'+'<g fill="#0a0807"><rect x="120" y="240" width="440" height="60" rx="8"/><rect x="150" y="220" width="60" height="24"/></g>'+fire(280,300,2.4)+fire(400,300,2)+smoke(340,140,2)+'<g fill="#f2b134"><rect x="250" y="160" width="5" height="5"/><rect x="420" y="130" width="5" height="5"/></g>')},
+ {id:"s3-hughes",season:3,no:"17",year:"1924",titleZh:"神父的下场",titleEn:"The priest's reckoning",
+  taleZh:"为童年被侵犯复仇,迈克尔割喉处决了休斯神父(汤米授意),救回被绑架的幼子查理。",
+  taleEn:"Avenging his abuse as a boy, Michael cuts Father Hughes's throat with Tommy's blessing — and they recover the kidnapped infant Charlie.",
+  cast:["michael","hughes","tommy","charlie"],threads:[],art:svgScene(bg([['#161218',360],['#0a070c',200]])+'<rect x="240" y="120" width="200" height="280" fill="#120d14"/>'+ground(360,'#0e0a10')+figS(290,452,'cap',2.5,'#0a0807')+figS(400,452,'fedora',2.4,'#0a0807')+'<rect x="332" y="380" width="30" height="6" fill="#a3231d"/>')},
+ {id:"s3-arrest",season:3,no:"18",year:"1924",titleZh:"出卖全家",titleEn:"Betraying the family",
+  taleZh:"为换一桩更高层的交易,汤米设局让亚瑟、约翰、波莉、迈克尔悉数被捕,自己独留庄园。",
+  taleEn:"For a deal with people above his enemies, Tommy lets Arthur, John, Polly and Michael all be arrested — and stands alone in the mansion.",
+  cast:["tommy","arthur","john","polly","michael"],threads:[],art:svgScene(bg([['#1a1814',300],['#0e0b08',260]])+ground(380,'#100d0a')+'<line x1="80" y1="200" x2="80" y2="320" stroke="#3a3526" stroke-width="3"/><circle cx="80" cy="332" r="10" fill="#e0a64e"/>'+'<g opacity="0.9">'+figS(200,470,'police',2.1,'#0a0807')+figS(280,470,'cap',2.1,'#0a0807')+figS(360,470,'woman',2.05,'#0a0807')+figS(440,470,'cap',2.05,'#0a0807')+figS(520,470,'police',2.1,'#0a0807')+'</g>')},
  {id:"s6-ruby",season:6,no:"33",year:"1933",titleZh:"鲁比之死",titleEn:"Ruby's death",
   taleZh:"诅咒应验。汤米的女儿鲁比染肺结核夭折;悲恸之下他血洗了下诅咒的营地。",
   taleEn:"The curse comes due. Tommy's daughter Ruby dies of consumption; in grief he massacres the camp that cursed her.",
@@ -407,6 +437,10 @@ function propSvg(k){
  if(k=="badge") return '<polygon points="22,5 27,16 39,16 29,24 33,37 22,29 11,37 15,24 5,16 17,16" fill="#aeb6bf"/><circle cx="22" cy="21" r="4" fill="#6a7078"/>';
  if(k=="horseshoe") return '<path d="M12,38 A13,13 0 1,1 32,38" fill="none" stroke="#e3bb50" stroke-width="6"/><circle cx="12" cy="38" r="2" fill="#2e2620"/><circle cx="32" cy="38" r="2" fill="#2e2620"/>';
  if(k=="glove") return '<rect x="12" y="18" width="20" height="19" rx="7" fill="#7a2420"/><rect x="27" y="15" width="9" height="11" rx="4" fill="#7a2420"/><rect x="12" y="33" width="20" height="4" fill="#5a1712"/>';
+ if(k=="cross") return '<rect x="19" y="7" width="6" height="31" fill="#caa64a"/><rect x="11" y="16" width="22" height="6" fill="#caa64a"/>';
+ if(k=="knife") return '<polygon points="7,33 29,11 33,15 11,37" fill="#cdd2d8"/><polygon points="29,11 38,17 33,22 26,16" fill="#3a2a1e"/>';
+ if(k=="coin") return '<circle cx="22" cy="22" r="14" fill="#caa64a"/><circle cx="22" cy="22" r="10" fill="none" stroke="#8a6a2a" stroke-width="2"/><rect x="19" y="15" width="6" height="14" fill="#8a6a2a"/>';
+ if(k=="phone") return '<rect x="18" y="26" width="8" height="12" fill="#2a2a30"/><rect x="20" y="12" width="4" height="16" fill="#2a2a30"/><circle cx="22" cy="11" r="5" fill="#2a2a30"/><rect x="27" y="14" width="11" height="4" rx="2" fill="#3a3a40"/>';
  return '<circle cx="22" cy="22" r="10" fill="#e3bb50"/>';
 }
 var PROP_MAP={
@@ -423,7 +457,12 @@ var PROP_MAP={
  "s2-michael":{kind:"key",x:52,y:34,lz:"钥匙",le:"a key"},
  "s2-epsom":{kind:"gun",x:50,y:32,lz:"手枪",le:"the pistol"},
  "s2-polly":{kind:"gun",x:44,y:34,lz:"冒烟的左轮",le:"a smoking revolver"},
+ "s3-wedding":{kind:"glass",x:62,y:40,lz:"婚礼的酒杯",le:"a wedding glass"},
+ "s3-russia":{kind:"cross",x:60,y:40,lz:"神父的十字架",le:"the priest's cross"},
  "s3-grace":{kind:"gem",x:50,y:26,lz:"蓝宝石",le:"the sapphire"},
+ "s3-tunnel":{kind:"gem",x:50,y:26,lz:"法贝热彩蛋",le:"the Fabergé jewel"},
+ "s3-hughes":{kind:"knife",x:50,y:34,lz:"刀",le:"the knife"},
+ "s3-arrest":{kind:"badge",x:50,y:30,lz:"警徽",le:"the badge"},
  "s6-ruby":{kind:"gem",x:52,y:34,lz:"被诅咒的宝石",le:"the cursed stone"},
  "s6-finale":{kind:"match",x:30,y:40,lz:"点火的火柴",le:"the match"}
 };
