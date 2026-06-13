@@ -99,6 +99,9 @@ var T={
 /* === 纯逻辑 === */
 var lang="zh";
 function t(k){ var e=T[k]; return e? (e[lang]||e.zh) : k; }
+var state={lang:"zh",muted:false,lastBeat:null,lastThread:"all",visited:{}};
+function save(){ try{ localStorage.setItem("pbd",JSON.stringify(state)); }catch(e){} }
+function load(){ try{ var r=localStorage.getItem("pbd"); if(r){ var o=JSON.parse(r); for(var k in o) state[k]=o[k]; lang=state.lang; } }catch(e){} }
 function __selftest(){
   var fails=[];
   function ok(c,m){ if(!c){ fails.push(m); console.assert(c,m);} }
@@ -122,6 +125,13 @@ function __selftest(){
   ok(t("start")!=="start"&&t("start").length>0,"t(start) 应返回译文");
   lang="en"; ok(t("start")==="Press start","英文 t(start) 应为 Press start");
   lang="zh"; ok(t("nope_key")==="nope_key","缺失 key 应回退为 key 本身");
+  var _bk=localStorage.getItem("pbd"), _bs=JSON.stringify(state);
+  state.lastBeat="s3-grace"; state.lang="en"; save();
+  state.lastBeat=null; state.lang="zh"; load();
+  ok(state.lastBeat==="s3-grace","load 应恢复 lastBeat");
+  ok(state.lang==="en","load 应恢复 lang");
+  var _o=JSON.parse(_bs); for(var _k in state) delete state[_k]; for(var _k2 in _o) state[_k2]=_o[_k2]; lang=state.lang;
+  if(_bk===null) localStorage.removeItem("pbd"); else localStorage.setItem("pbd",_bk);
   return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
 }
 /* === 渲染 === */ /* (Task 4–7,9) */
