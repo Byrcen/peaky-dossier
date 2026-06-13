@@ -20,6 +20,22 @@ html,body{margin:0;background:#0c0a08;color:#e9dcc3;font-family:var(--serif)}
 .sb .sblab{font-family:var(--type);font-size:11px;color:#8a7a5a;margin-right:4px}
 .sgb{font-family:var(--type);font-size:12px;color:#cdbfa3;background:#1f1810;border:1px solid #4a3a28;border-radius:5px;padding:4px 11px;cursor:pointer}
 .sgb.active{color:#1a130c;background:#cdbfa3;border-color:#cdbfa3}
+.cf{width:370px;max-width:100%;background:var(--manila);border:1px solid #9a865d;border-radius:6px;overflow:hidden;font-family:var(--serif)}
+.cf-top{display:flex;gap:12px;align-items:center;background:#241a10;padding:12px 14px}
+.cf-pic{width:60px;height:60px;flex:none;border:1px solid #b6a47a;border-radius:4px;overflow:hidden}
+.cf-pic svg{width:60px;height:60px;display:block}
+.cf-nm{font-size:18px;font-weight:700;color:#f3e4c6;margin:0}
+.cf-ro{font-family:var(--stencil);font-size:12px;color:#caa64a;margin-top:2px}
+.cf-x{margin-left:auto;background:none;border:none;color:#caa64a;font-size:18px;cursor:pointer;align-self:flex-start}
+.cf-b{padding:12px 16px 16px}
+.cf-bio{font-size:14px;line-height:1.6;color:#2f2316;margin:0 0 10px}
+.cf-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px;font-family:var(--stencil);font-size:12px;color:#5a4326}
+.cf-go{font-family:var(--stencil);font-size:14px;background:#7c1f17;color:#f3dec5;border:none;border-radius:6px;padding:11px 16px;cursor:pointer;width:100%}
+.cf-go:hover{background:#9a2519}
+.lensplay{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:8;font-family:var(--stencil);font-size:13px;background:#7c1f17;color:#f3dec5;border:1px solid #a3372a;border-radius:7px;padding:9px 18px;cursor:pointer}
+.lensplay:hover{background:#9a2519}
+.pin .seen{position:absolute;top:-8px;right:-8px;width:19px;height:19px;border-radius:50%;background:#3b7a4a;color:#eafff0;font-size:12px;line-height:19px;text-align:center;z-index:5;border:1px solid #1f4a2a}
+.thb .seen{color:#7bd08c;margin-left:2px}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
 .lang{display:flex;border:1px solid #4a3a28;border-radius:6px;overflow:hidden}
 .lang button{font-family:var(--serif);font-size:12px;color:#cdbfa3;background:#241b12;border:none;padding:5px 11px;cursor:pointer}
@@ -478,19 +494,21 @@ function pinRefScene(p){
 function renderBoard(){
  var el=document.getElementById("board");
  var thbtns='<button class="thb" data-th="all">'+t("allThreads")+'</button>'+THREADS.map(function(th){
-  return '<button class="thb" data-th="'+th.id+'"><span class="dot" style="background:'+th.color+'"></span>'+(lang==="zh"?th.nameZh:th.nameEn)+'</button>';
+  var done=th.beatIds.every(function(x){return state.visited[x];});
+  return '<button class="thb" data-th="'+th.id+'"><span class="dot" style="background:'+th.color+'"></span>'+(lang==="zh"?th.nameZh:th.nameEn)+(done?' <span class="seen">✓</span>':'')+'</button>';
  }).join("");
  var sgbtns=[1,2,3,4,5,6].map(function(n){return '<button class="sgb" data-s="'+n+'">S'+n+'</button>';}).join("");
  el.innerHTML='<div class="cb"><div class="threads">'+thbtns+'</div>'
   +'<div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div>'
   +'<div class="sb"><span class="sblab">'+(lang==="zh"?"按季":"By series")+'</span>'+sgbtns+'</div>'
-  +'<div class="bwrap" id="bwrap"><div class="bframe"></div><svg class="strings" id="strings"></svg><div id="pinlayer"></div></div>';
+  +'<div class="bwrap" id="bwrap"><div class="bframe"></div><svg class="strings" id="strings"></svg><div id="pinlayer"></div><button class="lensplay hidden" id="lensplay"></button></div>';
  var pl=el.querySelector("#pinlayer");
  BOARD_PINS.forEach(function(p){
   var d=document.createElement("div");d.className="pin "+p.kind;d.dataset.pin=p.id;
   d.style.left=p.x+"%";d.style.top=p.y+"%";d.style.transform="translate(-50%,-50%) rotate("+p.rot+"deg)";
-  d.innerHTML='<span class="tack" style="background:'+p.tack+'"></span>'+pinInner(p);
-  d.addEventListener("click",function(){openDossier(pinRefScene(p));});
+  var seenB=""; if(p.kind==="photo"){ var bb=beatsForChar(p.ref); if(bb.length&&bb.every(function(x){return state.visited[x];})) seenB='<span class="seen">✓</span>'; }
+  d.innerHTML='<span class="tack" style="background:'+p.tack+'"></span>'+seenB+pinInner(p);
+  d.addEventListener("click",function(){ if(p.kind==="photo") openCharFile(p.ref); else openDossier(p.ref); });
   pl.appendChild(d);
  });
  el.querySelectorAll(".thb").forEach(function(b){b.addEventListener("click",function(){filterThread(b.dataset.th);});});
@@ -526,6 +544,8 @@ function filterThread(thId){
  document.querySelectorAll(".pin").forEach(function(el){var on=thId==="all"||m[el.dataset.pin];
   el.classList.toggle("dim",thId!=="all"&&!on);el.classList.toggle("act",thId!=="all"&&!!on);});
  renderStrings(thId);
+ var lp=document.getElementById("lensplay");
+ if(lp){ if(thId==="all"){ lp.classList.add("hidden"); } else { var th=THREADS.filter(function(x){return x.id===thId;})[0]; var n=th.beatIds.length; lp.innerHTML="▶ "+(lang==="zh"?("追这条线 · "+n+" 幕"):("Follow this thread · "+n)); lp.onclick=function(){playLens(threadOrder(thId),(lang==="zh"?th.nameZh:th.nameEn));}; lp.classList.remove("hidden"); } }
 }
 function filterSeason(sn){
  state.season=sn; state.lastThread=null; save();
@@ -535,10 +555,30 @@ function filterSeason(sn){
   var inS=(p.kind==="photo")?(charById(p.ref).seasons.indexOf(sn)>-1):(sceneById(p.ref).season===sn);
   el.classList.toggle("dim",!inS); el.classList.remove("act"); });
  renderStrings("none");
+ var lp=document.getElementById("lensplay");
+ if(lp){ var n=beatsForSeason(sn).length; lp.innerHTML="▶ "+(lang==="zh"?("看 S"+sn+" · "+n+" 幕"):("Watch S"+sn+" · "+n)); lp.onclick=function(){playLens(beatsForSeason(sn),"S"+sn);}; lp.classList.remove("hidden"); }
 }
 function setLang(l){lang=l;state.lang=l;save();renderBoard();}
 function threadsForScene(id){ var r=[]; THREADS.forEach(function(t){ if(t.beatIds.indexOf(id)>-1) r.push(t.id); }); return r; }
 var curBeat=null;
+function openCharFile(cid){
+ var c=charById(cid); if(!c)return;
+ var beats=beatsForChar(cid);
+ var seen=beats.filter(function(b){return state.visited[b];}).length;
+ var ths=THREADS.filter(function(th){ return th.beatIds.some(function(bid){ var sc=sceneById(bid); return sc&&(sc.cast||[]).indexOf(cid)>-1; }); });
+ var thChips=ths.map(function(th){return '<span class="chip" style="background:'+th.color+';color:#fff;border-color:'+th.color+'">'+(lang==="zh"?th.nameZh:th.nameEn)+'</span>';}).join("");
+ var d=document.getElementById("dossier");
+ d.innerHTML='<div class="cf"><div class="cf-top"><div class="cf-pic"><svg viewBox="0 0 86 84"><rect width="86" height="84" fill="#d3c099"/>'+fig(c.portrait)+'</svg></div>'
+  +'<div><p class="cf-nm">'+(lang==="zh"?c.nameZh:c.nameEn)+'</p><div class="cf-ro">'+(lang==="zh"?c.roleZh:c.roleEn)+'</div></div>'
+  +'<button class="cf-x" aria-label="close">&times;</button></div>'
+  +'<div class="cf-b"><p class="cf-bio">'+(lang==="zh"?c.bioZh:c.bioEn)+'</p>'
+  +'<div class="cf-meta"><span>'+(lang==="zh"?("出现在 "+beats.length+" 幕 · 已读 "+seen+"/"+beats.length):(beats.length+" scenes · "+seen+"/"+beats.length+" seen"))+'</span>'+thChips+'</div>'
+  +'<button class="cf-go">'+(lang==="zh"?("跟随 "+c.nameZh+" 的故事"):("Follow "+c.nameEn))+' &#9656;</button></div></div>';
+ d.classList.remove("hidden");
+ d.onclick=function(e){if(e.target===d)closeDossier();};
+ d.querySelector(".cf-x").onclick=closeDossier;
+ d.querySelector(".cf-go").onclick=function(){ var lb=(lang==="zh"?c.nameZh:c.nameEn); closeDossier(); playLens(beats,lb); };
+}
 function openDossier(sceneId){
  var s=sceneById(sceneId); if(!s)return; curBeat=sceneId;
  var cast=(s.cast||[]).map(function(id){var c=charById(id);return '<span class="chip">'+(lang==="zh"?c.nameZh:c.nameEn)+'</span>';}).join("");
@@ -556,7 +596,7 @@ function openDossier(sceneId){
  d.classList.remove("hidden");
  d.onclick=function(e){if(e.target===d)closeDossier();};
  d.querySelector(".dz-x").onclick=closeDossier;
- d.querySelector(".dz-go").onclick=function(){navMode="time";navThread=null;closeDossier();openScene(curBeat);};
+ d.querySelector(".dz-go").onclick=function(){closeDossier();playLens([curBeat],(lang==="zh"?s.titleZh:s.titleEn));};
 }
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
 function propSvg(k){
@@ -625,18 +665,20 @@ function openScene(sceneId){ curBeat=sceneId; state.lastBeat=sceneId; state.visi
 function renderScene(sceneId){
  var s=sceneById(sceneId),el=document.getElementById("scene");
  var pm=PROP_MAP[sceneId]||{kind:"cap",x:50,y:66,lz:"继续",le:"continue"};
- var o=currentOrder(),i=o.indexOf(curBeat),hasPrev=i>0;
+ var o=currentOrder(),i=o.indexOf(curBeat),hasPrev=i>0,last=(i>=o.length-1);
+ var prog=lens.label?(lens.label+' · '+(i+1)+'/'+o.length):s.no;
+ var propLab=last?(lang==="zh"?"读完 · 回到卷宗":"done — to the board"):(lang==="zh"?pm.lz:pm.le);
  el.classList.remove("in");
  el.innerHTML='<div class="sc-art">'+s.art+'</div><div class="sc-scrim"></div><div class="sc-lb t"></div><div class="sc-lb b"></div>'
-  +'<div class="sc-tag">'+seasonLabel(s.season)+' · '+s.year+'</div><div class="sc-num">'+s.no+'</div>'
+  +'<div class="sc-tag">'+seasonLabel(s.season)+' · '+s.year+'</div><div class="sc-num">'+prog+'</div>'
   +'<div class="sc-cap"><p class="sc-big">'+(lang==="zh"?s.titleZh:s.titleEn)+'</p><p class="sc-small">'+(lang==="zh"?s.taleZh:s.taleEn)+'</p></div>'
   +'<button class="sc-back">&#9664; '+t("backBoard")+'</button>'
   +(hasPrev?'<button class="sc-prev2" aria-label="prev">&#8249;</button>':'')
-  +'<div class="sc-prop" style="left:'+pm.x+'%;top:'+pm.y+'%"><div class="halo"></div><svg viewBox="0 0 44 44">'+propSvg(pm.kind)+'</svg><div class="lab">'+(lang==="zh"?pm.lz:pm.le)+' &#8594;</div></div>'
+  +'<div class="sc-prop" style="left:'+pm.x+'%;top:'+pm.y+'%"><div class="halo"></div><svg viewBox="0 0 44 44">'+propSvg(pm.kind)+'</svg><div class="lab">'+propLab+' &#8594;</div></div>'
   +'<div class="sc-hint">'+t("propHint")+'</div>';
- el.querySelector(".sc-back").onclick=function(){setView("board");};
+ el.querySelector(".sc-back").onclick=function(){backToBoard();};
  var pv=el.querySelector(".sc-prev2"); if(pv)pv.onclick=function(){stepScene(-1);};
- el.querySelector(".sc-prop").onclick=function(){ var oo=currentOrder(),ii=oo.indexOf(curBeat); if(ii>=0&&ii<oo.length-1) stepScene(1); else setView("board"); };
+ el.querySelector(".sc-prop").onclick=function(){stepScene(1);};
  requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("in");});});
 }
 var view="board";
@@ -648,12 +690,16 @@ function setView(v){
 }
 function beatsInOrder(){ return SCENES.map(function(s){return s.id;}); }
 function threadOrder(thId){ var th=THREADS.filter(function(x){return x.id===thId;})[0]; return th?th.beatIds.slice():[]; }
-var navMode="time", navThread=null;
-function currentOrder(){ return (navMode==="thread"&&navThread)? threadOrder(navThread) : beatsInOrder(); }
+function beatsForChar(cid){ return SCENES.filter(function(s){return (s.cast||[]).indexOf(cid)>-1;}).map(function(s){return s.id;}); }
+function beatsForSeason(n){ return SCENES.filter(function(s){return s.season===n;}).map(function(s){return s.id;}); }
+var lens={order:[],label:""};
+function currentOrder(){ return lens.order.length? lens.order : beatsInOrder(); }
+function playLens(order,label){ if(!order||!order.length)return; lens={order:order.slice(),label:label||""}; openScene(order[0]); }
 function stepScene(d){
- var o=currentOrder(),i=o.indexOf(curBeat); if(i<0){i=beatsInOrder().indexOf(curBeat);o=beatsInOrder();}
- var n=i+d; if(n<0||n>=o.length)return; openScene(o[n]);
+ var o=lens.order.length?lens.order:beatsInOrder(),i=o.indexOf(curBeat),n=i+d;
+ if(n<0)return; if(n>=o.length){ backToBoard(); return; } openScene(o[n]);
 }
+function backToBoard(){ var sc=document.getElementById("scene"); sc.classList.add("hidden"); sc.classList.remove("in"); lens={order:[],label:""}; renderBoard(); document.getElementById("board").classList.remove("hidden"); view="board"; }
 function renderTitle(){
  var el=document.getElementById("title");
  var resume=state.lastBeat? '<button class="t-resume">'+t("resume")+' &#8250;</button>':'';
