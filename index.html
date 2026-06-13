@@ -22,8 +22,90 @@ html,body{margin:0;background:#0c0a08;color:#e9dcc3;font-family:var(--serif)}
 </div>
 <script>
 "use strict";
-/* === 数据 === */ /* (Task 1–2) */
-/* === 纯逻辑 === */ /* (Task 2,3,8) */
+/* === 数据 === */
+/* 种子场景 tableau(沿用已验证概念稿配色) */
+function SVG_PROLOGUE(){return '<svg viewBox="0 0 680 560" preserveAspectRatio="xMidYMid slice"><rect width="680" height="560" fill="#241a16"/><rect y="160" width="680" height="70" fill="#5e2e1d"/><rect y="230" width="680" height="55" fill="#8f3f1f"/><rect y="285" width="680" height="60" fill="#c2592a"/><circle cx="520" cy="312" r="30" fill="#efb24a"/><g fill="#120f0c"><rect x="60" y="210" width="26" height="135"/><rect x="120" y="180" width="22" height="165"/><rect x="180" y="220" width="20" height="125"/><rect x="430" y="200" width="24" height="145"/><rect x="486" y="230" width="18" height="115"/><rect x="600" y="210" width="26" height="135"/></g><g fill="#2e2620" opacity="0.7"><ellipse cx="132" cy="160" rx="22" ry="12"/><ellipse cx="150" cy="130" rx="26" ry="13"/><ellipse cx="442" cy="180" rx="20" ry="11"/><ellipse cx="612" cy="186" rx="22" ry="12"/></g><rect y="345" width="680" height="215" fill="#100d0a"/><rect y="345" width="680" height="6" fill="#1c1611"/><g fill="#070605"><rect x="262" y="410" width="92" height="32" rx="6"/><polygon points="346,416 372,378 386,384 360,424"/><polygon points="372,378 393,374 397,391 378,397"/><rect x="272" y="440" width="9" height="48"/><rect x="300" y="440" width="9" height="48"/><rect x="330" y="440" width="9" height="48"/><rect x="346" y="440" width="9" height="46"/><polygon points="262,414 244,420 249,460 265,438"/><polygon points="300,390 320,390 324,414 296,414"/><rect x="303" y="374" width="15" height="15"/><rect x="299" y="369" width="23" height="6"/></g></svg>';}
+function SVG_GUNS(){return '<svg viewBox="0 0 680 560" preserveAspectRatio="xMidYMid slice"><rect width="680" height="560" fill="#171a20"/><g stroke="#20242c" stroke-width="2"><line x1="0" y1="130" x2="680" y2="130"/><line x1="0" y1="210" x2="680" y2="210"/><line x1="0" y1="290" x2="680" y2="290"/></g><line x1="500" y1="0" x2="500" y2="100" stroke="#3a3526" stroke-width="2"/><circle cx="500" cy="110" r="11" fill="#f2c45a"/><polygon points="500,110 405,500 595,500" fill="#f2c45a" opacity="0.07"/><g fill="#5a4226" stroke="#382911" stroke-width="3"><rect x="268" y="350" width="150" height="120"/><rect x="150" y="400" width="90" height="70"/><rect x="446" y="406" width="86" height="64"/></g><g stroke="#382911" stroke-width="2"><line x1="268" y1="390" x2="418" y2="390"/><line x1="268" y1="430" x2="418" y2="430"/><line x1="318" y1="350" x2="318" y2="470"/><line x1="368" y1="350" x2="368" y2="470"/></g><g fill="#14110d"><rect x="286" y="332" width="120" height="9"/><circle cx="326" cy="325" r="13"/><rect x="286" y="334" width="14" height="18"/></g><g fill="#0c0a08"><polygon points="150,350 184,350 192,490 142,490"/><rect x="156" y="320" width="22" height="24"/><rect x="150" y="314" width="34" height="8"/></g><g fill="#0c0a08"><polygon points="500,350 534,350 542,490 492,490"/><rect x="506" y="320" width="22" height="24"/><rect x="500" y="314" width="34" height="8"/></g><rect y="472" width="680" height="88" fill="#0e1014"/></svg>';}
+function SVG_GRACE(){return '<svg viewBox="0 0 680 560" preserveAspectRatio="xMidYMid slice"><rect width="680" height="560" fill="#1a1417"/><g fill="#241a1e"><rect x="60" y="80" width="70" height="250" rx="34"/><rect x="170" y="80" width="70" height="250" rx="34"/><rect x="440" y="80" width="70" height="250" rx="34"/><rect x="550" y="80" width="70" height="250" rx="34"/></g><g fill="#3a2a1c" opacity="0.55"><rect x="68" y="90" width="54" height="230" rx="26"/><rect x="178" y="90" width="54" height="230" rx="26"/><rect x="448" y="90" width="54" height="230" rx="26"/><rect x="558" y="90" width="54" height="230" rx="26"/></g><line x1="340" y1="34" x2="340" y2="70" stroke="#3a2e1c" stroke-width="2"/><g fill="#e7b860"><circle cx="340" cy="78" r="6"/><circle cx="320" cy="92" r="4"/><circle cx="360" cy="92" r="4"/><circle cx="330" cy="104" r="3.5"/><circle cx="350" cy="104" r="3.5"/><circle cx="340" cy="110" r="3.5"/></g><rect y="380" width="680" height="180" fill="#241a1c"/><g stroke="#15080a" stroke-width="2" opacity="0.5"><line x1="330" y1="380" x2="320" y2="560"/><line x1="360" y1="380" x2="372" y2="560"/></g><g fill="#0d0a0b"><polygon points="356,320 392,320 404,460 348,460"/><rect x="362" y="292" width="22" height="26"/><rect x="360" y="286" width="28" height="8"/></g><g><polygon points="298,332 330,332 344,460 286,460" fill="#d3c8b8"/><rect x="305" y="306" width="20" height="24" fill="#b89a78"/><rect x="301" y="300" width="28" height="12" fill="#241a14"/><rect x="299" y="308" width="7" height="22" fill="#241a14"/><rect x="324" y="308" width="7" height="22" fill="#241a14"/></g><g fill="#b01b16"><polygon points="322,350 330,368 350,364 334,378 340,398 322,386 306,398 312,376 298,366 318,368"/></g><rect x="320" y="380" width="4" height="34" fill="#8f1410"/></svg>';}
+function SVG_RUBY(){return '<svg viewBox="0 0 680 560" preserveAspectRatio="xMidYMid slice"><rect width="680" height="560" fill="#6f7479"/><rect width="680" height="160" fill="#595e63"/><rect y="160" width="680" height="120" fill="#6b7075"/><rect y="280" width="680" height="120" fill="#7d8287"/><rect y="400" width="680" height="160" fill="#8b9095"/><line x1="0" y1="380" x2="680" y2="380" stroke="#6a6f74" stroke-width="3" opacity="0.6"/><g fill="#4a4e52" opacity="0.5"><rect x="566" y="260" width="12" height="160"/><polygon points="572,260 540,220 548,260"/><polygon points="572,260 604,216 596,260"/><polygon points="572,240 552,206 572,230"/></g><g fill="#d2d7db" opacity="0.32"><polygon points="392,310 420,310 430,450 384,450"/><rect x="399" y="286" width="16" height="22"/></g><g fill="#3a3e42"><polygon points="300,322 338,322 348,472 292,472"/><rect x="310" y="294" width="20" height="26"/><polygon points="330,312 356,288 362,296 336,322"/><rect x="350" y="280" width="14" height="10"/></g><circle cx="296" cy="332" r="3" fill="#d2702f"/></svg>';}
+function SVG_FINALE(){return '<svg viewBox="0 0 680 560" preserveAspectRatio="xMidYMid slice"><rect width="680" height="560" fill="#0b0d12"/><rect y="130" width="680" height="80" fill="#141821"/><circle cx="600" cy="90" r="26" fill="#cdd2c4"/><g fill="#0a0807"><rect x="350" y="270" width="250" height="180"/><polygon points="350,270 475,210 600,270"/><rect x="372" y="170" width="20" height="50"/><rect x="540" y="170" width="20" height="50"/></g><g fill="#f2a83a"><rect x="378" y="308" width="34" height="34"/><rect x="438" y="308" width="34" height="34"/><rect x="498" y="308" width="34" height="34"/><rect x="438" y="368" width="34" height="56"/></g><g fill="#b3231a"><polygon points="360,270 380,200 404,270"/><polygon points="430,270 460,180 492,270"/><polygon points="520,270 548,206 572,270"/></g><g fill="#e0651f"><polygon points="368,270 384,216 402,270"/><polygon points="438,270 462,202 486,270"/><polygon points="526,270 548,226 566,270"/></g><g fill="#f2b134"><polygon points="376,270 386,232 398,270"/><polygon points="448,270 462,220 478,270"/><polygon points="534,270 548,240 560,270"/></g><g fill="#f2b134"><rect x="420" y="170" width="4" height="4"/><rect x="500" y="140" width="4" height="4"/><rect x="470" y="120" width="3" height="3"/><rect x="540" y="180" width="3" height="3"/></g><g fill="#1b1f27" opacity="0.8"><ellipse cx="470" cy="170" rx="70" ry="26"/><ellipse cx="470" cy="130" rx="92" ry="30"/></g><rect y="450" width="680" height="110" fill="#08090d"/><ellipse cx="150" cy="440" rx="92" ry="42" fill="#39404a" opacity="0.5"/><g fill="#e8e6df"><rect x="104" y="400" width="86" height="30" rx="6"/><polygon points="104,406 80,376 70,384 96,420"/><polygon points="80,376 60,374 58,388 78,392"/><rect x="112" y="428" width="8" height="44"/><rect x="138" y="428" width="8" height="44"/><rect x="164" y="428" width="8" height="44"/><polygon points="190,404 206,410 202,442 188,424"/></g><g fill="#15110e"><polygon points="130,384 150,384 154,406 126,406"/><rect x="133" y="368" width="15" height="15"/><rect x="129" y="363" width="23" height="6"/></g></svg>';}
+
+var FACTIONS=[
+ {id:"peaky",nameZh:"浴血黑帮",nameEn:"Peaky Blinders",color:"#caa64a"},
+ {id:"crown",nameZh:"王权/警方",nameEn:"Crown & Police",color:"#37475c"},
+ {id:"curse",nameZh:"诅咒/吉普赛",nameEn:"Romani / curse",color:"#3e8bd0"}
+];
+var CHARACTERS=[
+ {id:"tommy",nameZh:"汤米·谢尔比",nameEn:"Tommy Shelby",faction:"peaky",seasons:[1,2,3,4,5,6],portrait:"flatcap",
+  roleZh:"帮派首脑",roleEn:"Gang leader",bioZh:"战壕归来的谢尔比家掌舵人,帽檐藏刀片。",bioEn:"Razor-capped head of the Shelby family, back from the trenches."},
+ {id:"grace",nameZh:"格蕾丝",nameEn:"Grace Shelby",faction:"crown",seasons:[1,2,3],portrait:"woman",
+  roleZh:"卧底→挚爱",roleEn:"Informant turned wife",bioZh:"Garrison 的卧底歌女,后成汤米之妻。",bioEn:"The Garrison's undercover singer, later Tommy's wife."},
+ {id:"ruby",nameZh:"鲁比",nameEn:"Ruby Shelby",faction:"peaky",seasons:[6],portrait:"child",
+  roleZh:"汤米之女",roleEn:"Tommy's daughter",bioZh:"汤米与莉齐的女儿,诅咒的应验者。",bioEn:"Tommy and Lizzie's daughter; where the curse comes due."},
+ {id:"polly",nameZh:"波莉",nameEn:"Polly Gray",faction:"peaky",seasons:[1,2,3,4,5],portrait:"woman",
+  roleZh:"家族女家长",roleEn:"Matriarch & treasurer",bioZh:"谢尔比家的女家长与账房,Elizabeth Gray。",bioEn:"The family's matriarch and treasurer, Elizabeth Gray."},
+ {id:"campbell",nameZh:"坎贝尔督察",nameEn:"Insp. Campbell",faction:"crown",seasons:[1,2],portrait:"police",
+  roleZh:"北爱督察",roleEn:"Ulster detective",bioZh:"丘吉尔从贝尔法斯特调来的督察,汤米首个宿敌。",bioEn:"Churchill's detective from Belfast; Tommy's first adversary."}
+];
+var SCENES=[
+ {id:"prologue",season:0,no:"00",year:"1919",titleZh:"凭浴血黑帮之名",titleEn:"By order of the Peaky Blinders",
+  taleZh:"战后的小希思,煤烟与马蹄。汤米从战壕归来,帽檐缝着剃刀,眼里是一整座城市的野心。",
+  taleEn:"Post-war Small Heath — smoke and hooves. Tommy rides back from the trenches with razors in his cap and a whole city in his eyes.",
+  cast:["tommy","polly"],threads:[],art:SVG_PROLOGUE()},
+ {id:"s1-guns",season:1,no:"01",year:"1919",titleZh:"失窃的机枪",titleEn:"The stolen guns",
+  taleZh:"一只本不该拿的板条箱。运往利比亚的 Lewis 机枪落进帮派手里,惊动了丘吉尔。",
+  taleEn:"One crate they were never meant to take. A consignment of Lewis guns bound for Libya falls into gang hands — and reaches Churchill's desk.",
+  cast:["tommy","campbell"],threads:[],art:SVG_GUNS()},
+ {id:"s3-grace",season:3,no:"15",year:"1924",titleZh:"慈善晚宴的子弹",titleEn:"The bullet at the gala",
+  taleZh:"『For Angel!』枪声响起。射向汤米的子弹,击中了格蕾丝。她正戴着那条被诅咒的蓝宝石。",
+  taleEn:"'For Angel!' — a single shot. The bullet meant for Tommy finds Grace instead. She is wearing the cursed sapphire.",
+  cast:["tommy","grace"],threads:["sapphire"],art:SVG_GRACE()},
+ {id:"s6-ruby",season:6,no:"33",year:"1933",titleZh:"鲁比之死",titleEn:"Ruby's death",
+  taleZh:"诅咒应验。汤米的女儿鲁比染肺结核夭折;悲恸之下他血洗了下诅咒的营地。",
+  taleEn:"The curse comes due. Tommy's daughter Ruby dies of consumption; in grief he massacres the camp that cursed her.",
+  cast:["tommy","ruby"],threads:["sapphire"],art:SVG_RUBY()},
+ {id:"s6-finale",season:6,no:"35",year:"1934",titleZh:"烈火与重生",titleEn:"Fire and rebirth",
+  taleZh:"他识破了假死的诅咒。火烧 Arrow House,骑上白马遁入晨雾——汤米·谢尔比还活着。",
+  taleEn:"He sees through the lie of his own death. Arrow House burns; he rides a white horse into the mist — Tommy Shelby is still alive.",
+  cast:["tommy"],threads:[],art:SVG_FINALE()}
+];
+var THREADS=[
+ {id:"sapphire",nameZh:"被诅咒的蓝宝石",nameEn:"The cursed sapphire",color:"#3e8bd0",
+  pinIds:["pin-grace","pin-ruby"],beatIds:["s3-grace","s6-ruby"],
+  noteZh:"格蕾丝的项链辗转克死七岁的康妮,诅咒应验在鲁比身上。",noteEn:"Grace's necklace kills seven-year-old Connie, and the curse comes due on Ruby."}
+];
+var BOARD_PINS=[
+ {id:"pin-tommy",kind:"photo",ref:"tommy",x:50,y:46,rot:-2,tack:"#c0352a"},
+ {id:"pin-grace",kind:"photo",ref:"grace",x:26,y:24,rot:3,tack:"#d9cdb0"},
+ {id:"pin-polly",kind:"photo",ref:"polly",x:16,y:62,rot:-3,tack:"#b8862b"},
+ {id:"pin-campbell",kind:"photo",ref:"campbell",x:14,y:28,rot:2,tack:"#37475c"},
+ {id:"pin-ruby",kind:"photo",ref:"ruby",x:76,y:72,rot:-2,tack:"#cf6b86"},
+ {id:"pin-guns",kind:"event",ref:"s1-guns",x:74,y:30,rot:2,tack:"#2c2c2c"},
+ {id:"pin-finale",kind:"event",ref:"s6-finale",x:86,y:58,rot:-3,tack:"#c2592a"}
+];
+/* === 纯逻辑 === */
+function __selftest(){
+  var fails=[];
+  function ok(c,m){ if(!c){ fails.push(m); console.assert(c,m);} }
+  ok(Array.isArray(SCENES)&&SCENES.length>=5,"SCENES 至少 5 条");
+  ok(Array.isArray(CHARACTERS)&&CHARACTERS.length>=5,"CHARACTERS 至少 5 条");
+  ok(Array.isArray(THREADS)&&THREADS.length>=1,"THREADS 至少 1 条");
+  ok(Array.isArray(BOARD_PINS)&&BOARD_PINS.length>=5,"BOARD_PINS 至少 5 条");
+  var sids={}; SCENES.forEach(function(s){ok(!sids[s.id],"SCENE id 重复:"+s.id);sids[s.id]=1;});
+  var cids={}; CHARACTERS.forEach(function(c){ok(!cids[c.id],"CHAR id 重复:"+c.id);cids[c.id]=1;});
+  SCENES.forEach(function(s){(s.cast||[]).forEach(function(id){ok(cids[id],"scene "+s.id+" 引用了不存在的人物 "+id);});});
+  var pids={}; BOARD_PINS.forEach(function(p){pids[p.id]=1;});
+  THREADS.forEach(function(t){
+    (t.beatIds||[]).forEach(function(id){ok(sids[id],"thread "+t.id+" beatId 无效:"+id);});
+    (t.pinIds||[]).forEach(function(id){ok(pids[id],"thread "+t.id+" pinId 无效:"+id);});
+  });
+  BOARD_PINS.forEach(function(p){
+    if(p.kind==="photo") ok(cids[p.ref],"pin "+p.id+" ref 人物无效:"+p.ref);
+    else ok(sids[p.ref],"pin "+p.id+" ref 场景无效:"+p.ref);
+  });
+  SCENES.forEach(function(s){ok(s.titleZh&&s.titleEn&&s.taleZh&&s.taleEn,"scene "+s.id+" 双语字段缺失");});
+  return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
+}
 /* === 渲染 === */ /* (Task 4–7,9) */
 function boot(){ console.log("peaky-dossier boot ok"); }
 boot();
