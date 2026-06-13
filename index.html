@@ -45,6 +45,22 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
 .dz-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
 .chip{font-family:var(--stencil);font-size:11px;background:#c7b485;color:#3a2c14;border:1px solid #ab986a;border-radius:4px;padding:2px 7px}
 .dz-go{font-family:var(--stencil);font-size:13px;background:#241a10;color:#e7c98a;border:none;border-radius:5px;padding:8px 14px;cursor:pointer}
+#scene{position:relative;height:600px;background:#0a0807;border:1px solid var(--frame);border-radius:10px;overflow:hidden}
+.sc-art{position:absolute;inset:0;transform:scale(1.08);transition:transform 1.4s ease}
+#scene.in .sc-art{transform:scale(1)}
+.sc-art svg{width:100%;height:100%;display:block}
+.sc-scrim{position:absolute;left:0;right:0;bottom:0;height:260px;background:rgba(8,6,5,.5);z-index:2}
+.sc-lb{position:absolute;left:0;right:0;height:36px;background:#000;z-index:3}
+.sc-lb.t{top:0}.sc-lb.b{bottom:0}
+.sc-tag{position:absolute;top:48px;left:22px;font-family:var(--stencil);font-size:12px;letter-spacing:2px;color:#e7c98a;z-index:4}
+.sc-num{position:absolute;top:44px;right:22px;font-family:var(--type);font-size:13px;color:#cbb78c;z-index:4}
+.sc-cap{position:absolute;left:0;right:0;bottom:96px;padding:0 30px;z-index:4;opacity:0;transform:translateY(24px);transition:opacity 1s ease,transform 1s ease}
+#scene.in .sc-cap{opacity:1;transform:none}
+.sc-big{font-family:var(--disp);font-weight:700;font-size:28px;line-height:1.15;color:#f4ead7;margin:0 0 9px}
+.sc-small{font-size:15px;line-height:1.6;color:#d9ccb4;max-width:620px;margin:0}
+.sc-nav{position:absolute;bottom:46px;right:24px;display:flex;gap:8px;z-index:5}
+.sc-nav button,.sc-back{font-family:var(--stencil);font-size:12px;color:#e7c98a;background:rgba(20,16,10,.7);border:1px solid #4a3a28;border-radius:6px;padding:7px 12px;cursor:pointer}
+.sc-back{position:absolute;bottom:46px;left:24px;z-index:5}
 </style>
 </head>
 <body>
@@ -267,7 +283,26 @@ function openDossier(sceneId){
  d.querySelector(".dz-go").onclick=function(){closeDossier();openScene(curBeat);};
 }
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
-function openScene(id){console.log("scene",id);}
+function seasonLabel(s){var z=["序幕","第一季","第二季","第三季","第四季","第五季","第六季","终幕"][s];
+ var e=["Prologue","Series 1","Series 2","Series 3","Series 4","Series 5","Series 6","Finale"][s];
+ return (lang==="zh"?z:e);}
+function openScene(sceneId){ curBeat=sceneId; state.lastBeat=sceneId; state.visited[sceneId]=1; save();
+ setView("scene"); renderScene(sceneId); }
+function renderScene(sceneId){
+ var s=sceneById(sceneId),el=document.getElementById("scene");
+ el.classList.remove("in");
+ el.innerHTML='<div class="sc-art">'+s.art+'</div><div class="sc-scrim"></div><div class="sc-lb t"></div><div class="sc-lb b"></div>'
+  +'<div class="sc-tag">'+seasonLabel(s.season)+' · '+s.year+'</div><div class="sc-num">'+s.no+'</div>'
+  +'<div class="sc-cap"><p class="sc-big">'+(lang==="zh"?s.titleZh:s.titleEn)+'</p><p class="sc-small">'+(lang==="zh"?s.taleZh:s.taleEn)+'</p></div>'
+  +'<button class="sc-back">&#9664; '+t("backBoard")+'</button>'
+  +'<div class="sc-nav"><button class="sc-prev">'+t("prev")+'</button><button class="sc-next">'+t("next")+'</button></div>';
+ el.querySelector(".sc-back").onclick=function(){setView("board");};
+ el.querySelector(".sc-prev").onclick=function(){stepScene(-1);};
+ el.querySelector(".sc-next").onclick=function(){stepScene(1);};
+ requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("in");});});
+}
+function setView(v){var b=document.getElementById("board"),s=document.getElementById("scene");if(v==="scene"){b.classList.add("hidden");s.classList.remove("hidden");}else{s.classList.add("hidden");b.classList.remove("hidden");}}
+function stepScene(d){console.log("step",d);}
 function boot(){ load(); renderBoard(); document.getElementById("title").classList.add("hidden"); document.getElementById("board").classList.remove("hidden"); }
 boot();
 </script>
