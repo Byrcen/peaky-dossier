@@ -83,7 +83,22 @@ var BOARD_PINS=[
  {id:"pin-guns",kind:"event",ref:"s1-guns",x:74,y:30,rot:2,tack:"#2c2c2c"},
  {id:"pin-finale",kind:"event",ref:"s6-finale",x:86,y:58,rot:-3,tack:"#c2592a"}
 ];
+var T={
+ start:{zh:"按下开始",en:"Press start"},
+ subtitle:{zh:"谢尔比家二十年 · 六季全剧情",en:"Twenty years of the Shelbys · all six series"},
+ board:{zh:"卷宗",en:"The board"},
+ allThreads:{zh:"全部线索",en:"All threads"},
+ openScene:{zh:"翻开场景",en:"Open the scene"},
+ backBoard:{zh:"返回红线板",en:"Back to the board"},
+ caseFile:{zh:"案卷",en:"Case file"},
+ prev:{zh:"上一幕",en:"Previous"},
+ next:{zh:"下一幕",en:"Next"},
+ appears:{zh:"出场",en:"Appears"},
+ resume:{zh:"继续上次",en:"Resume"}
+};
 /* === 纯逻辑 === */
+var lang="zh";
+function t(k){ var e=T[k]; return e? (e[lang]||e.zh) : k; }
 function __selftest(){
   var fails=[];
   function ok(c,m){ if(!c){ fails.push(m); console.assert(c,m);} }
@@ -104,6 +119,9 @@ function __selftest(){
     else ok(sids[p.ref],"pin "+p.id+" ref 场景无效:"+p.ref);
   });
   SCENES.forEach(function(s){ok(s.titleZh&&s.titleEn&&s.taleZh&&s.taleEn,"scene "+s.id+" 双语字段缺失");});
+  ok(t("start")!=="start"&&t("start").length>0,"t(start) 应返回译文");
+  lang="en"; ok(t("start")==="Press start","英文 t(start) 应为 Press start");
+  lang="zh"; ok(t("nope_key")==="nope_key","缺失 key 应回退为 key 本身");
   return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
 }
 /* === 渲染 === */ /* (Task 4–7,9) */
