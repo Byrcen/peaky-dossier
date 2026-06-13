@@ -32,6 +32,19 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
 .event .card{width:150px;background:#ded8c6;border:1px solid #b4ab90;padding:6px 8px;color:#1d1a12}
 .ev-k{font-family:var(--stencil);font-size:10px;letter-spacing:1px;color:#7c1f17}
 .ev-h{font-family:var(--disp);font-weight:700;font-size:13px;line-height:1.15;margin:2px 0}
+#dossier{position:absolute;inset:0;background:rgba(11,8,5,.82);display:flex;align-items:center;justify-content:center;padding:18px;z-index:30}
+.dz{width:440px;max-width:100%;background:var(--manila);border:1px solid #9a865d;border-radius:4px;overflow:hidden;font-family:var(--serif)}
+.dz-top{position:relative;display:flex;align-items:center;gap:10px;background:#7c1f17;color:#f3dec5;padding:9px 12px;font-family:var(--stencil)}
+.dz-no{font-size:12px;letter-spacing:1.5px}.dz-season{font-size:12px;opacity:.85}
+.dz-x{margin-left:auto;background:none;border:none;color:#f3dec5;cursor:pointer;font-size:18px}
+.dz-b{padding:12px 16px 16px}
+.dz-y{font-family:var(--type);font-size:12px;color:#7c1f17}
+.dz-tz{font-size:19px;font-weight:700;color:#241a10;margin:2px 0 0}
+.dz-te{font-family:var(--stencil);font-size:13px;color:#5a4326;margin:1px 0 8px}
+.dz-tx{font-size:14px;line-height:1.6;color:#2f2316;margin:0 0 10px}
+.dz-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.chip{font-family:var(--stencil);font-size:11px;background:#c7b485;color:#3a2c14;border:1px solid #ab986a;border-radius:4px;padding:2px 7px}
+.dz-go{font-family:var(--stencil);font-size:13px;background:#241a10;color:#e7c98a;border:none;border-radius:5px;padding:8px 14px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -233,7 +246,28 @@ function filterThread(thId){
  renderStrings(thId);
 }
 function setLang(l){lang=l;state.lang=l;save();renderBoard();}
-function openDossier(id){console.log("open",id);}
+var curBeat=null;
+function openDossier(sceneId){
+ var s=sceneById(sceneId); if(!s)return; curBeat=sceneId;
+ var cast=(s.cast||[]).map(function(id){var c=charById(id);return '<span class="chip">'+(lang==="zh"?c.nameZh:c.nameEn)+'</span>';}).join("");
+ var ths=(s.threads||[]).map(function(id){var th=THREADS.filter(function(x){return x.id===id;})[0];
+  return th? '<span class="chip" style="background:'+th.color+';color:#fff;border-color:'+th.color+'">'+(lang==="zh"?th.nameZh:th.nameEn)+'</span>':"";}).join("");
+ var d=document.getElementById("dossier");
+ d.innerHTML='<div class="dz"><div class="dz-top"><span class="dz-no">'+t("caseFile")+' '+s.no+'</span>'
+  +'<span class="dz-season">S'+s.season+' · '+s.year+'</span><button class="dz-x" aria-label="close">&times;</button></div>'
+  +'<div class="dz-b"><div class="dz-y">'+s.year+'</div>'
+  +'<p class="dz-tz">'+(lang==="zh"?s.titleZh:s.titleEn)+'</p>'
+  +'<div class="dz-te">'+(lang==="zh"?s.titleEn:s.titleZh)+'</div>'
+  +'<p class="dz-tx">'+(lang==="zh"?s.taleZh:s.taleEn)+'</p>'
+  +'<div class="dz-meta"><span class="chip" style="background:none;border:none;color:#5a4326">'+t("appears")+':</span>'+cast+ths+'</div>'
+  +'<button class="dz-go">'+t("openScene")+' &#9656;</button></div></div>';
+ d.classList.remove("hidden");
+ d.onclick=function(e){if(e.target===d)closeDossier();};
+ d.querySelector(".dz-x").onclick=closeDossier;
+ d.querySelector(".dz-go").onclick=function(){closeDossier();openScene(curBeat);};
+}
+function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
+function openScene(id){console.log("scene",id);}
 function boot(){ load(); renderBoard(); document.getElementById("title").classList.add("hidden"); document.getElementById("board").classList.remove("hidden"); }
 boot();
 </script>
