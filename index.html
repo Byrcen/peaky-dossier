@@ -38,6 +38,8 @@ html,body{margin:0;background:#0c0a08;color:#e9dcc3;font-family:var(--serif)}
 .thb .seen{color:#7bd08c;margin-left:2px}
 .mapbtn{font-family:var(--stencil);font-size:12px;color:#1a130c;background:#cdbfa3;border:1px solid #cdbfa3;border-radius:6px;padding:5px 11px;cursor:pointer}
 .mapbtn:hover{background:#dccfa8}
+.mutebtn{font-size:14px;line-height:1;background:#241b12;border:1px solid #4a3a28;border-radius:6px;padding:5px 9px;cursor:pointer}
+.mutebtn:hover{background:#2e2316}
 .rm{width:580px;max-width:100%;max-height:500px;overflow:auto;background:var(--manila);border:1px solid #9a865d;border-radius:6px;font-family:var(--serif)}
 .rm-top{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;background:#241a10;color:#f3e4c6;padding:10px 14px;font-family:var(--stencil)}
 .rm-x{background:none;border:none;color:#caa64a;font-size:18px;cursor:pointer}
@@ -454,6 +456,29 @@ function t(k){ var e=T[k]; return e? (e[lang]||e.zh) : k; }
 var state={lang:"zh",muted:false,lastBeat:null,lastThread:"all",visited:{}};
 function save(){ try{ localStorage.setItem("pbd",JSON.stringify(state)); }catch(e){} }
 function load(){ try{ var r=localStorage.getItem("pbd"); if(r){ var o=JSON.parse(r); for(var k in o) state[k]=o[k]; lang=state.lang; } }catch(e){} }
+/* === 音频 === */
+var AC=null,MG=null,_amb=null;
+function _ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); MG=AC.createGain(); MG.gain.value=state.muted?0:0.55; MG.connect(AC.destination); }catch(e){} } if(AC&&AC.state==="suspended"){try{AC.resume();}catch(e){}} return AC; }
+function setMuted(m){ state.muted=m; save(); if(MG)MG.gain.value=m?0:0.55; var b=document.querySelector(".mutebtn"); if(b)b.textContent=m?"🔇":"🔊"; if(m)stopAmbient(); }
+function sfx(kind){ var ac=_ac(); if(!ac||state.muted)return; var t=ac.currentTime;
+ function tone(f,d,ty,g,to){ var o=ac.createOscillator(),ga=ac.createGain(); o.type=ty||"square"; o.frequency.setValueAtTime(f,t); if(to)o.frequency.exponentialRampToValueAtTime(to,t+d); ga.gain.setValueAtTime(g||0.2,t); ga.gain.exponentialRampToValueAtTime(0.001,t+d); o.connect(ga);ga.connect(MG);o.start(t);o.stop(t+d); }
+ function noise(d,g,filt){ var len=Math.floor(ac.sampleRate*d),b=ac.createBuffer(1,len,ac.sampleRate),dt=b.getChannelData(0); for(var i=0;i<len;i++)dt[i]=Math.random()*2-1; var n=ac.createBufferSource();n.buffer=b; var ga=ac.createGain();ga.gain.setValueAtTime(g||0.2,t);ga.gain.exponentialRampToValueAtTime(0.001,t+d); var fl=ac.createBiquadFilter();fl.type="lowpass";fl.frequency.value=filt||1400; n.connect(fl);fl.connect(ga);ga.connect(MG);n.start(t);n.stop(t+d); }
+ if(kind==="gun"||kind==="bullet"){ noise(0.16,0.55,2600); tone(72,0.22,"square",0.32,38); }
+ else if(kind==="match"||kind==="flag"){ noise(0.5,0.16,900); }
+ else if(kind==="gem"){ tone(880,0.5,"sine",0.18,1320); }
+ else if(kind==="cross"){ tone(440,0.9,"sine",0.16); }
+ else if(kind==="coin"){ tone(1180,0.1,"square",0.15); tone(1560,0.12,"square",0.12); }
+ else if(kind==="knife"){ noise(0.12,0.3,3200); }
+ else if(kind==="enter"){ tone(196,0.32,"triangle",0.14,294); }
+ else { tone(330,0.1,"square",0.1); }
+}
+function startAmbient(season){ var ac=_ac(); if(!ac||state.muted)return; if(_amb&&_amb.season===season)return; stopAmbient();
+ var bases=[110,98,110,104,98,92,84,78],base=bases[season]||100;
+ var g=ac.createGain(); g.gain.value=0; g.connect(MG); g.gain.linearRampToValueAtTime(0.07,ac.currentTime+1.6);
+ var osc=[]; [1,1.5,2.005].forEach(function(m){ var o=ac.createOscillator(); o.type="sawtooth"; o.frequency.value=base*m; var f=ac.createBiquadFilter();f.type="lowpass";f.frequency.value=400; o.connect(f);f.connect(g);o.start(); osc.push(o); });
+ _amb={g:g,osc:osc,season:season};
+}
+function stopAmbient(){ if(_amb&&AC){ try{ var a=_amb; a.g.gain.cancelScheduledValues(AC.currentTime); a.g.gain.linearRampToValueAtTime(0,AC.currentTime+0.4); setTimeout(function(){a.osc.forEach(function(o){try{o.stop();}catch(e){}});},500); }catch(e){} } _amb=null; }
 function __selftest(){
   var fails=[];
   function ok(c,m){ if(!c){ fails.push(m); console.assert(c,m);} }
@@ -527,7 +552,7 @@ function renderBoard(){
  }).join("");
  var sgbtns=[1,2,3,4,5,6].map(function(n){return '<button class="sgb" data-s="'+n+'">S'+n+'</button>';}).join("");
  el.innerHTML='<div class="cb"><div class="threads">'+thbtns+'</div>'
-  +'<div style="display:flex;gap:8px;align-items:center"><button class="mapbtn">'+(lang==="zh"?"关系图谱":"The web")+'</button><div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div></div>'
+  +'<div style="display:flex;gap:8px;align-items:center"><button class="mutebtn" aria-label="mute">'+(state.muted?"🔇":"🔊")+'</button><button class="mapbtn">'+(lang==="zh"?"关系图谱":"The web")+'</button><div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div></div>'
   +'<div class="sb"><span class="sblab">'+(lang==="zh"?"按季":"By series")+'</span>'+sgbtns+'</div>'
   +'<div class="bwrap" id="bwrap"><div class="bframe"></div><svg class="strings" id="strings"></svg><div id="pinlayer"></div><button class="lensplay hidden" id="lensplay"></button></div>';
  var pl=el.querySelector("#pinlayer");
@@ -542,6 +567,7 @@ function renderBoard(){
  el.querySelectorAll(".thb").forEach(function(b){b.addEventListener("click",function(){filterThread(b.dataset.th);});});
  el.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.l);});});
  el.querySelector(".mapbtn").addEventListener("click",openRelMap);
+ el.querySelector(".mutebtn").addEventListener("click",function(){setMuted(!state.muted);});
  el.querySelectorAll(".sgb").forEach(function(b){b.addEventListener("click",function(){filterSeason(parseInt(b.dataset.s,10));});});
  wireResize();
  filterThread(state.lastThread||"all");
@@ -708,6 +734,7 @@ function seasonLabel(s){var z=["序幕","第一季","第二季","第三季","第
  var e=["Prologue","Series 1","Series 2","Series 3","Series 4","Series 5","Series 6","Finale"][s];
  return (lang==="zh"?z:e);}
 function openScene(sceneId){ curBeat=sceneId; state.lastBeat=sceneId; state.visited[sceneId]=1; save();
+ var _sc=sceneById(sceneId); startAmbient(_sc?_sc.season:0); sfx("enter");
  setView("scene"); renderScene(sceneId); }
 function renderScene(sceneId){
  var s=sceneById(sceneId),el=document.getElementById("scene");
@@ -725,7 +752,7 @@ function renderScene(sceneId){
   +'<div class="sc-hint">'+t("propHint")+'</div>';
  el.querySelector(".sc-back").onclick=function(){backToBoard();};
  var pv=el.querySelector(".sc-prev2"); if(pv)pv.onclick=function(){stepScene(-1);};
- el.querySelector(".sc-prop").onclick=function(){stepScene(1);};
+ el.querySelector(".sc-prop").onclick=function(){sfx(pm.kind);stepScene(1);};
  requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("in");});});
 }
 var view="board";
@@ -746,7 +773,7 @@ function stepScene(d){
  var o=lens.order.length?lens.order:beatsInOrder(),i=o.indexOf(curBeat),n=i+d;
  if(n<0)return; if(n>=o.length){ backToBoard(); return; } openScene(o[n]);
 }
-function backToBoard(){ var sc=document.getElementById("scene"); sc.classList.add("hidden"); sc.classList.remove("in"); lens={order:[],label:""}; renderBoard(); document.getElementById("board").classList.remove("hidden"); view="board"; }
+function backToBoard(){ stopAmbient(); var sc=document.getElementById("scene"); sc.classList.add("hidden"); sc.classList.remove("in"); lens={order:[],label:""}; renderBoard(); document.getElementById("board").classList.remove("hidden"); view="board"; }
 function renderTitle(){
  var el=document.getElementById("title");
  var resume=state.lastBeat? '<button class="t-resume">'+t("resume")+' &#8250;</button>':'';
