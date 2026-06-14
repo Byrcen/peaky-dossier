@@ -17,7 +17,8 @@
 </p>
 
 <p align="center">
-  🕹️ <b>试玩</b>:克隆后双击 <code>index.html</code> 即开 —— 零依赖、无需构建、无需后端。
+  🕹️ <b><a href="https://peaky-dossier.vercel.app">在线试玩 &nbsp;Live Demo →</a></b><br>
+  <sub>或克隆后双击 <code>index.html</code> 即开 —— 零依赖、无需构建、无需后端。</sub>
 </p>
 
 ---
