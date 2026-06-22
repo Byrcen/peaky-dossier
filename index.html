@@ -136,9 +136,10 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
  #board{max-width:100%}
  .cb{padding:6px 8px;gap:6px}.thb,.sgb{font-size:11px;padding:4px 8px}
  .bwrap{flex:1}
- .photo .frame{width:62px;padding:4px 4px 0}.photo svg{width:62px;height:60px}
- .cap{font-size:11px;padding:2px 1px 3px}
- .event .card{width:120px;padding:5px 6px}.ev-h{font-size:12px}
+ .photo .frame{width:48px;padding:3px 3px 0}.photo svg{width:48px;height:46px}
+ .cap{font-size:9px;padding:1px 1px 2px}
+ .event .card{width:96px;padding:4px 5px}.ev-h{font-size:11px}
+ #board .pin.dim{display:none}
  #scene{height:100vh}
  .sc-big{font-size:21px}.sc-small{font-size:13px;line-height:1.5}
  .sc-cap{bottom:88px;padding:0 18px}.sc-tag{left:14px;top:42px}.sc-num{right:14px;top:40px}
@@ -195,6 +196,10 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
 .final h2{font-family:var(--stencil);color:var(--amber);letter-spacing:.05em}
 .final-stats{color:var(--amber);font-family:var(--type);margin:10px 0 20px}
 .final-line{color:#d9c8a4;max-width:600px;line-height:1.8;font-style:italic}
+#title:not(.hidden),#board:not(.hidden),#casebook:not(.hidden),#dossier:not(.hidden){animation:vfade .3s ease}
+@keyframes vfade{from{opacity:0}to{opacity:1}}
+.case-toast{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:9;background:#2a1a12ee;color:#e7c98a;border:1px solid #6a5a3a;border-radius:6px;padding:8px 16px;font-family:var(--type);font-size:13px;max-width:88%;text-align:center;pointer-events:none}
+@media (prefers-reduced-motion: reduce){#title:not(.hidden),#board:not(.hidden),#casebook:not(.hidden),#dossier:not(.hidden){animation:none}}
 @media (max-width:640px){
  .case-title{font-size:14px}.case-brief{font-size:12px}.case-prompt{font-size:13px}
  .cb-grid{grid-template-columns:1fr 1fr}.cb-head h2{font-size:18px}
@@ -520,7 +525,7 @@ var BOARD_PINS=[
  {id:"pin-billygrade",kind:"photo",ref:"billygrade",x:62,y:46,rot:-3,tack:"#9a6cd0"},
  {id:"pin-swing",kind:"photo",ref:"swing",x:74,y:46,rot:3,tack:"#9a6cd0"},
  {id:"pin-ruby",kind:"photo",ref:"ruby",x:72,y:72,rot:-2,tack:"#cf6b86"},
- {id:"pin-sapphire",kind:"event",ref:"s6-curse",x:47,y:74,rot:2,tack:"#3e8bd0"},
+ {id:"pin-sapphire",kind:"event",ref:"s6-curse",x:48,y:86,rot:2,tack:"#3e8bd0"},
  {id:"pin-vicente",kind:"photo",ref:"vicente",x:90,y:30,rot:3,tack:"#1c1c1c"},
  {id:"pin-finn",kind:"photo",ref:"finn",x:30,y:54,rot:-2,tack:"#b8862b"},
  {id:"pin-holford",kind:"photo",ref:"holford",x:54,y:34,rot:2,tack:"#9aa0a8"}
@@ -640,7 +645,7 @@ var CASES=[
    {scene:"s6-bodies",clueZh:"IRA 把波莉、阿贝拉马、Barney 的尸体送回——S5 那通告密的电话,代价在此。",clueEn:"The IRA return the bodies of Polly, Aberama and Barney — the price of that S5 phone call comes due."},
    {scene:"s6-boston",clueZh:"戒酒的 Tommy 做着波士顿鸦片生意;迈克尔记恨波莉之死,起了弑兄之心。",clueEn:"Sober Tommy works the Boston opium trade; Michael, blaming him for Polly, wants him dead."},
    {scene:"s6-curse",clueZh:"Grace 的蓝宝石辗转克死了七岁的康妮;Evadne 以此诅咒 Tommy——也将失去七岁的女儿。",clueEn:"Grace's sapphire passes on and kills seven-year-old Connie; Evadne curses Tommy to lose his own daughter at seven."},
-   {scene:"s6-diagnosis",clueZh:"霍尔福德医生诊断 Tommy 患'结核瘤'将死;诊断来得'恰逢其时'——背后晃着莫斯利的影子。",clueEn:"Dr. Holford diagnoses a fatal 'tuberculoma'; the diagnosis is suspiciously convenient — Mosley's shadow falls behind it."}
+   {scene:"s6-diagnosis",clueZh:"霍尔福德医生诊断 Tommy 患'结核瘤',时日无多。诊断来得太巧——谁最希望这位议员'自己'安静地消失?",clueEn:"Dr. Holford diagnoses a fatal 'tuberculoma' — not long to live. The timing is too convenient: who most wants this MP to quietly remove himself?"}
   ],
   steps:[
    {kind:"predict",beforeScene:"s6-ruby",
@@ -734,7 +739,7 @@ function sfx(kind){ var ac=_ac(); if(!ac||state.muted)return; var t=ac.currentTi
  else if(kind==="coin"){ tone(1180,0.1,"square",0.15); tone(1560,0.12,"square",0.12); }
  else if(kind==="knife"){ noise(0.12,0.3,3200); }
  else if(kind==="enter"){ tone(196,0.32,"triangle",0.14,294); }
- else if(kind==="stamp"){ noise(0.09,0.5,500); tone(150,0.14,"square",0.28,90); }
+ else if(kind==="stamp"){ noise(0.07,0.45,420); tone(190,0.05,"square",0.22,130); tone(110,0.17,"square",0.3,68); }
  else if(kind==="buzz"){ tone(120,0.22,"sawtooth",0.22,80); }
  else if(kind==="pluck"){ tone(520,0.16,"triangle",0.2,360); }
  else if(kind==="tick"){ tone(880,0.05,"square",0.1); }
@@ -1019,6 +1024,7 @@ function openCase(id){
   boardMode="case"; state.cases.current=id; state.cases.step=0;
   connTap=null; caseLinks=[]; stepProgress=0; caseCost={wrong:0,hints:0}; save();
   showOnly("board"); view="board"; enterStep();
+  if(!state.cases.onboarded){ state.cases.onboarded=1; save(); caseToast(lang==="zh"?"玩法:先点上方证物看线索,再在板上点照片指认 / 按顺序连线":"How to play: examine the evidence chips above, then tap photos to accuse / pins in order to connect", 5200); }
 }
 function exitToCasebook(){ stopAmbient(); boardMode="free"; activeCase=null; activeCaseData=null; sceneCtx=null; lens={order:[],label:""}; renderCasebook(); }
 function enterStep(){
@@ -1093,11 +1099,17 @@ function paintCaseStrings(){
 }
 function onCasePinTap(pinId){
   var st=activeCaseData.steps[state.cases.step];
+  if(!evidenceGateOK()){ caseToast(lang==="zh"?("先查阅证物再下结论 · 还差 "+(evidenceNeed()-evidenceSeen())+" 条"):("Examine the evidence first · "+(evidenceNeed()-evidenceSeen())+" to go")); return; }
   if(st.kind==="accuse") doAccuse(pinId);
   else if(st.kind==="connect") doConnectTap(pinId);
 }
 function flashWrongPin(pinId){ var d=document.querySelector('.pin[data-pin="'+pinId+'"]'); if(d){d.classList.add("wrong");setTimeout(function(){d.classList.remove("wrong");},420);} }
 function markPinSelected(pinId,on){ var d=document.querySelector('.pin[data-pin="'+pinId+'"]'); if(d)d.classList.toggle("selected",on); }
+function caseToast(msg,ms){ var b=document.getElementById("board"); if(!b)return; var ex=b.querySelector(".case-toast"); if(ex&&ex.parentNode)ex.parentNode.removeChild(ex); var d=document.createElement("div"); d.className="case-toast"; d.textContent=msg; b.appendChild(d); setTimeout(function(){ if(d.parentNode)d.parentNode.removeChild(d); }, ms||2600); }
+function caseLabel(pinId){ var p=pinById(pinId); if(!p)return""; if(p.kind==="photo"){ var c=charById(p.ref); return c?(lang==="zh"?c.nameZh:c.nameEn):""; } var s=sceneById(p.ref); return s?(lang==="zh"?s.titleZh:s.titleEn):""; }
+function evidenceNeed(){ return Math.ceil(activeCaseData.evidence.length/2); }
+function evidenceSeen(){ return activeCaseData.evidence.filter(function(e){return state.cases.examined[e.scene];}).length; }
+function evidenceGateOK(){ return !!state.cases.solved[activeCaseData.id] || evidenceSeen()>=evidenceNeed(); }
 function registerWrong(){ caseCost.wrong++; sfx("buzz");
   if(caseCost.wrong>=3){ verdictOverlay(false,(lang==="zh"?"线索不足以定案——看看到底发生了什么。":"Not enough to charge — see what actually happened."),true,null); return true; }
   return false;
@@ -1105,17 +1117,17 @@ function registerWrong(){ caseCost.wrong++; sfx("buzz");
 function doAccuse(pinId){
   var st=activeCaseData.steps[state.cases.step];
   if(accuseCorrect(st,pinId)){ sfx("stamp"); verdictOverlay(true,(lang==="zh"?st.becauseZh:st.becauseEn),false,advanceStep); }
-  else { flashWrongPin(pinId); registerWrong(); }
+  else { flashWrongPin(pinId); if(!registerWrong()) caseToast(lang==="zh"?"不对——再想想谁有动机":"Not them — think about the motive"); }
 }
 function doConnectTap(pinId){
   var st=activeCaseData.steps[state.cases.step];
-  if(connTap===null){ connTap=pinId; markPinSelected(pinId,true); return; }
+  if(connTap===null){ connTap=pinId; markPinSelected(pinId,true); caseToast(lang==="zh"?("已选「"+caseLabel(pinId)+"」· 再点下一个图钉"):("Picked “"+caseLabel(pinId)+"” · tap the next pin")); return; }
   if(connTap===pinId){ markPinSelected(pinId,false); connTap=null; return; }
   var from=connTap,to=pinId; markPinSelected(from,false); connTap=null;
   if(linkExpectedAt(st,stepProgress,from,to)){
     caseLinks.push([from,to]); stepProgress++; sfx("pluck"); paintCaseStrings();
     if(stepProgress>=st.links.length){ verdictOverlay(true,(lang==="zh"?st.becauseZh:st.becauseEn),false,advanceStep); }
-  } else { flashWrongPin(from); flashWrongPin(to); registerWrong(); }
+  } else { flashWrongPin(from); flashWrongPin(to); if(!registerWrong()) caseToast(lang==="zh"?"顺序不对——从最早的那一环连起":"Wrong order — start from the earliest link"); }
 }
 function doPredict(st){
   var d=document.getElementById("dossier");
