@@ -71,16 +71,17 @@ html,body{margin:0;height:100%;background:#0c0a08;color:#e9dcc3;font-family:var(
 .lang{display:flex;border:1px solid #4a3a28;border-radius:6px;overflow:hidden}
 .lang button{font-family:var(--serif);font-size:12px;color:#cdbfa3;background:#241b12;border:none;padding:5px 11px;cursor:pointer}
 .lang button.active{background:var(--brass);color:#1a130c}
-.bwrap{position:relative;flex:1;min-height:0;background:var(--board);border:none;border-radius:0;overflow:hidden}
+.bwrap{position:relative;flex:1;min-height:0;background:radial-gradient(ellipse 72% 64% at 50% 36%, #30261a 0%, #241d15 52%, #16110a 100%);border:none;border-radius:0;overflow:hidden}
+.bwrap::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='cork'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23cork)'/%3E%3C/svg%3E")}
 .bframe{position:absolute;inset:7px;border:2px solid var(--frame);border-radius:4px;pointer-events:none}
 svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
 .pin{position:absolute;cursor:pointer;transition:opacity .25s;z-index:2}
 .pin.dim{opacity:.15}.pin.act .frame,.pin.act .card{outline:2px solid #e3bb50;outline-offset:1px}
 .tack{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;border:2px solid rgba(0,0,0,.4);z-index:4}
-.photo .frame{width:86px;background:var(--paper);padding:5px 5px 0;border:1px solid #b6a47a}
+.photo .frame{width:86px;background:var(--paper);padding:5px 5px 0;border:1px solid #b6a47a;box-shadow:0 5px 12px rgba(0,0,0,.5)}
 .photo svg{display:block;width:86px;height:84px}
 .cap{font-family:var(--type);font-size:11px;color:#2b2117;text-align:center;padding:3px 2px 4px;line-height:1.15}
-.event .card{width:150px;background:#ded8c6;border:1px solid #b4ab90;padding:6px 8px;color:#1d1a12}
+.event .card{width:150px;background:#ded8c6;border:1px solid #b4ab90;padding:6px 8px;color:#1d1a12;box-shadow:0 5px 12px rgba(0,0,0,.5)}
 .ev-k{font-family:var(--stencil);font-size:10px;letter-spacing:1px;color:#7c1f17}
 .ev-h{font-family:var(--disp);font-weight:700;font-size:13px;line-height:1.15;margin:2px 0}
 #dossier{position:absolute;inset:0;background:rgba(11,8,5,.82);display:flex;align-items:center;justify-content:center;padding:18px;z-index:30}
@@ -1016,7 +1017,7 @@ function openDossier(sceneId){
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
 /* === 推理玩法:案件流程 (Task C/D) === */
 var boardMode="free", activeCase=null, activeCaseData=null, sceneCtx=null;
-var connTap=null, caseLinks=[], stepProgress=0, caseCost={wrong:0,hints:0};
+var connTap=null, caseLinks=[], stepProgress=0, caseCost={wrong:0,hints:0}, connMoveHandler=null;
 function showOnly(id){ ["title","casebook","board","scene"].forEach(function(x){ var e=document.getElementById(x); if(!e)return; if(x===id){ e.classList.remove("hidden"); } else { e.classList.add("hidden"); if(x==="scene") e.classList.remove("in"); } }); }
 function openCase(id){
   if(caseStatus(id)==="locked")return;
@@ -1030,7 +1031,7 @@ function exitToCasebook(){ stopAmbient(); boardMode="free"; activeCase=null; act
 function enterStep(){
   var c=activeCaseData; if(!c)return;
   if(state.cases.step>=c.steps.length){ solveCase(); return; }
-  var st=c.steps[state.cases.step]; connTap=null; stepProgress=0;
+  var st=c.steps[state.cases.step]; connTap=null; connMoveHandler=null; stepProgress=0;
   showOnly("board"); renderBoard();
   if(st.kind==="predict"){ doPredict(st); }
 }
@@ -1119,11 +1120,14 @@ function doAccuse(pinId){
   if(accuseCorrect(st,pinId)){ sfx("stamp"); verdictOverlay(true,(lang==="zh"?st.becauseZh:st.becauseEn),false,advanceStep); }
   else { flashWrongPin(pinId); if(!registerWrong()) caseToast(lang==="zh"?"不对——再想想谁有动机":"Not them — think about the motive"); }
 }
+function clearPending(){ var p=document.getElementById("pendline"); if(p&&p.parentNode)p.parentNode.removeChild(p); var bw=document.getElementById("bwrap"); if(bw&&connMoveHandler)bw.removeEventListener("mousemove",connMoveHandler); connMoveHandler=null; }
+function startPending(fromPin){ var bw=document.getElementById("bwrap"); if(!bw)return; connMoveHandler=function(ev){ drawPendingLine(fromPin,ev); }; bw.addEventListener("mousemove",connMoveHandler); }
+function drawPendingLine(fromPin,ev){ var bw=document.getElementById("bwrap"),svg=document.getElementById("strings"); if(!bw||!svg)return; var A=pinById(fromPin); if(!A)return; var ax=A.x/100*bw.clientWidth,ay=A.y/100*bw.clientHeight; var r=bw.getBoundingClientRect(),mx=ev.clientX-r.left,my=ev.clientY-r.top; var p=document.getElementById("pendline"); if(!p){ p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("id","pendline"); p.setAttribute("stroke","#c0352a"); p.setAttribute("stroke-width","2"); p.setAttribute("stroke-dasharray","5 5"); p.setAttribute("fill","none"); p.setAttribute("opacity","0.75"); svg.appendChild(p); } p.setAttribute("d","M"+ax+" "+ay+" L"+mx+" "+my); }
 function doConnectTap(pinId){
   var st=activeCaseData.steps[state.cases.step];
-  if(connTap===null){ connTap=pinId; markPinSelected(pinId,true); caseToast(lang==="zh"?("已选「"+caseLabel(pinId)+"」· 再点下一个图钉"):("Picked “"+caseLabel(pinId)+"” · tap the next pin")); return; }
-  if(connTap===pinId){ markPinSelected(pinId,false); connTap=null; return; }
-  var from=connTap,to=pinId; markPinSelected(from,false); connTap=null;
+  if(connTap===null){ connTap=pinId; markPinSelected(pinId,true); startPending(pinId); caseToast(lang==="zh"?("已选「"+caseLabel(pinId)+"」· 再点下一个图钉"):("Picked “"+caseLabel(pinId)+"” · tap the next pin")); return; }
+  if(connTap===pinId){ markPinSelected(pinId,false); connTap=null; clearPending(); return; }
+  var from=connTap,to=pinId; markPinSelected(from,false); connTap=null; clearPending();
   if(linkExpectedAt(st,stepProgress,from,to)){
     caseLinks.push([from,to]); stepProgress++; sfx("pluck"); paintCaseStrings();
     if(stepProgress>=st.links.length){ verdictOverlay(true,(lang==="zh"?st.becauseZh:st.becauseEn),false,advanceStep); }
