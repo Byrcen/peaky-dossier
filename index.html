@@ -190,6 +190,8 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
 .ccard.current{border-color:var(--brass);box-shadow:0 0 0 1px rgba(202,146,47,.35)}
 .ccard.solved{opacity:.85}
 .ccard.locked{opacity:.4;cursor:not-allowed}
+.ccard.justsolved{animation:cardpulse 1.3s ease}
+@keyframes cardpulse{0%{box-shadow:0 0 0 0 rgba(202,166,74,0)}28%{box-shadow:0 0 0 3px var(--brass),0 0 26px rgba(202,166,74,.7)}100%{box-shadow:0 0 0 1px rgba(202,146,47,.35)}}
 .ccard .cno{font-family:var(--type);color:var(--ember);font-size:13px}
 .ccard .cttl{font-size:17px;color:#fff}
 .ccard .csub{font-size:12px;color:var(--amber);font-family:var(--stencil)}
@@ -206,7 +208,7 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
  .cb-grid{grid-template-columns:1fr 1fr}.cb-head h2{font-size:18px}
  .stamp{font-size:32px}.predq{font-size:16px}.predopt{padding:9px 14px;font-size:14px}
 }
-@media (prefers-reduced-motion: reduce){.caseline{animation:none;stroke-dashoffset:0}.stamp{animation:none;opacity:1}.pin.wrong{animation:none}}
+@media (prefers-reduced-motion: reduce){.caseline{animation:none;stroke-dashoffset:0}.stamp{animation:none;opacity:1}.pin.wrong{animation:none}.ccard.justsolved{animation:none}}
 </style>
 </head>
 <body>
@@ -562,14 +564,14 @@ var CASES=[
   evidence:[
    {scene:"s2-garrison",clueZh:"IRA 炸了加里森,胁迫 Tommy 替他们杀人——四面皆敌。",clueEn:"The IRA bomb the Garrison and blackmail Tommy into killing for them — enemies on every side."},
    {scene:"s2-epsom",clueZh:"坎贝尔与丘吉尔逼 Tommy 在赛马日行刺元帅;坎贝尔握着全家的命门。",clueEn:"Campbell and Churchill force Tommy to assassinate a Field Marshal; Campbell holds the whole family's leash."},
-   {scene:"s2-michael",clueZh:"波莉失散的儿子归来——她比谁都清楚坎贝尔对她做过什么,恨意最深。",clueEn:"Polly's lost son returns — she of all people knows what Campbell did to her, and hates him most."}
+   {scene:"s2-michael",clueZh:"波莉失散多年的儿子刚归来;而坎贝尔曾对她下过手——这笔私账,谢尔比家里没人比当事人记得更清。",clueEn:"Polly's long-lost son has just returned; and Campbell once laid hands on her — a private debt no one remembers more sharply than the one it was done to."}
   ],
   steps:[
    {kind:"accuse",
     promptZh:"坟边枪杀坎贝尔的是谁?",promptEn:"Who shoots Campbell dead at the graveside?",
     suspects:["pin-polly","pin-tommy","pin-arthur","pin-michael"],answer:"pin-polly",
-    becauseZh:"动机最私人的人是波莉——坎贝尔施暴于她;Tommy 此刻正被放过、需要他活着办差,没有人比波莉更想要这一枪。",
-    becauseEn:"The most personal motive is Polly's — Campbell assaulted her. Tommy is being spared to do a job; no one wants this shot more than she does."}
+    becauseZh:"动机最私人的人是波莉——坎贝尔施暴于她;Tommy 此刻正被丘吉尔的人放过、留作他用,亚瑟与迈克尔虽也恨坎贝尔,却没有这般切肤之仇。",
+    becauseEn:"The most personal motive is Polly's — Campbell assaulted her. Tommy is being spared by Churchill's man for a later use; Arthur and Michael hate Campbell too, but none carries a wound this personal."}
   ],
   seeds:[],closes:["bullet"],revealSeq:["s2-polly"]},
 
@@ -624,7 +626,7 @@ var CASES=[
    {scene:"s5-mosley",clueZh:"议员 Tommy 周旋于法西斯莫斯利——这是要除掉的目标。",clueEn:"MP Tommy circles the fascist Mosley — the target to be removed."},
    {scene:"s5-bonnie",clueZh:"Billy Boys 钉死 Bonnie,逼反阿贝拉马——刺杀计划随之定下。",clueEn:"The Billy Boys crucify Bonnie, turning Aberama — the assassination plan is set."},
    {scene:"s5-plot",clueZh:"计划部署完毕,却走漏了风声:有人多嘴,把它说给了爱嚼舌的 Billy Grade。",clueEn:"The plan is in place — but it leaks: someone talks, letting it slip to the loose-lipped Billy Grade."},
-   {scene:"s5-traitor",clueZh:"迈克尔和美籍妻子吉娜暗中要夺家族权柄——但那是抢钱抢位,不是把刺杀计划卖给 IRA。",clueEn:"Michael and his American wife Gina move to seize the family — but that's about money and power, not selling a plot to the IRA."}
+   {scene:"s5-traitor",clueZh:"迈克尔和美籍妻子吉娜暗中要夺家族权柄——他们盯着的是钱和位子,那是另一本账。",clueEn:"Michael and his American wife Gina are scheming to seize the family — but their eyes are on money and position; that's a separate ledger."}
   ],
   steps:[
    {kind:"connect",
@@ -741,7 +743,7 @@ function sfx(kind){ var ac=_ac(); if(!ac||state.muted)return; var t=ac.currentTi
  else if(kind==="knife"){ noise(0.12,0.3,3200); }
  else if(kind==="enter"){ tone(196,0.32,"triangle",0.14,294); }
  else if(kind==="stamp"){ noise(0.07,0.45,420); tone(190,0.05,"square",0.22,130); tone(110,0.17,"square",0.3,68); }
- else if(kind==="buzz"){ tone(120,0.22,"sawtooth",0.22,80); }
+ else if(kind==="buzz"){ tone(170,0.16,"triangle",0.18,95); tone(95,0.2,"sine",0.13,62); }
  else if(kind==="pluck"){ tone(520,0.16,"triangle",0.2,360); }
  else if(kind==="tick"){ tone(880,0.05,"square",0.1); }
  else { tone(330,0.1,"square",0.1); }
@@ -1160,7 +1162,7 @@ function solveCase(){
   var c=activeCaseData, id=c.id, prev=state.cases.solved[id];
   var rating=ratingFromCost(caseCost.wrong,caseCost.hints); if(prev&&prev.rating>rating)rating=prev.rating;
   state.cases.solved[id]={rating:rating,wrong:caseCost.wrong,hints:caseCost.hints};
-  state.cases.current=null; save();
+  state.cases.current=null; state.cases.justSolved=id; save();
   playReveal((c.revealSeq||[]).slice(), function(){ if(id==="c7-fog") renderFinalVerdict(); else exitToCasebook(); });
 }
 function softSolveAndReveal(){
@@ -1200,13 +1202,15 @@ function renderCasebook(){
     var stt=caseStatus(c.id), sv=state.cases.solved[c.id];
     var stars=sv?("★★★".slice(0,sv.rating)+"☆☆☆".slice(0,3-sv.rating)):"";
     var sub=stt==="solved"?(t("solvedLab")+" "+stars):stt==="locked"?t("lockedLab"):"";
-    return '<button class="ccard '+stt+'" data-c="'+c.id+'"'+(stt==="locked"?" disabled":"")+'>'
+    var fresh=(state.cases.justSolved===c.id)?" justsolved":"";
+    return '<button class="ccard '+stt+fresh+'" data-c="'+c.id+'"'+(stt==="locked"?" disabled":"")+'>'
       +'<span class="cno">'+c.no+'</span><span class="cttl">'+(lang==="zh"?c.titleZh:c.titleEn)+'</span>'
       +'<span class="csub">'+sub+'</span></button>';
   }).join("");
   var el=document.getElementById("casebook");
   el.innerHTML='<div class="cb-head"><button class="cb-back">&#9664; '+t("freeBrowse")+'</button><h2>'+t("casebook")+'</h2><div class="cb-inst">'+inst+'</div></div>'
    +'<div class="cb-grid">'+cards+'</div>';
+  if(state.cases.justSolved){ state.cases.justSolved=null; save(); }
   el.querySelectorAll(".ccard:not(.locked)").forEach(function(b){ b.onclick=function(){ openCase(b.dataset.c); }; });
   el.querySelector(".cb-back").onclick=function(){ enterBoard(); };
 }
