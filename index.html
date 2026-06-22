@@ -147,6 +147,60 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
  .rm,.cf,.dz{width:94vw}
 }
 @media (prefers-reduced-motion: reduce){.sc-art,#scene.in .sc-art,.sc-cap,#scene.in .sc-cap{transition:none!important;transform:none!important;opacity:1!important}.sc-prop .halo{animation:none!important;opacity:.5!important}}
+/* === 推理玩法 (Task C/D/E) === */
+.case-back,.cb-back{font-family:var(--stencil);font-size:12px;color:#cdbfa3;background:#241b12;border:1px solid #4a3a28;border-radius:6px;padding:5px 10px;cursor:pointer}
+.t-free{display:block;margin-top:14px;font-family:var(--stencil);font-size:13px;color:#cbb78c;background:#241b12;border:1px solid #4a3a28;border-radius:6px;padding:8px 18px;cursor:pointer}
+.casehead{padding:10px 14px;background:#17120d;border-left:1px solid var(--frame);border-right:1px solid var(--frame)}
+.case-title{font-family:var(--stencil);letter-spacing:.04em;color:var(--amber);font-size:16px}
+.case-brief{color:#d9c8a4;font-size:13px;max-width:680px;margin:4px 0 8px;line-height:1.5}
+.case-ev{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.case-ev .lab{font-family:var(--type);font-size:11px;color:#8a7a5a;margin-right:2px}
+.evchip{font-family:var(--type);background:#2a2018;color:var(--amber);border:1px solid #4a3a24;border-radius:4px;padding:3px 9px;font-size:12px;cursor:pointer}
+.evchip.seen{opacity:.55}
+.case-prompt{color:#fff;font-size:15px;font-weight:600;margin-top:2px}
+.case-stephint{color:#9a8f7a;font-size:12px;margin-top:3px}
+.case-hunch{margin-top:8px;font-family:var(--stencil);font-size:12px;color:var(--amber);background:#241a12;border:1px solid #4a3a24;border-radius:5px;padding:4px 11px;cursor:pointer}
+.pin.suspect{cursor:pointer}
+.pin.suspect .frame,.pin.suspect .card{outline:2px solid var(--brass);outline-offset:2px;box-shadow:0 0 14px rgba(202,166,74,.55)}
+.pin.selected .frame,.pin.selected .card{outline:3px solid var(--string);outline-offset:2px;box-shadow:0 0 16px rgba(192,53,42,.85)}
+.pin.wrong{animation:pinwrong .42s}
+@keyframes pinwrong{0%,100%{transform:translate(-50%,-50%)}25%{transform:translate(calc(-50% - 5px),-50%)}75%{transform:translate(calc(-50% + 5px),-50%)}}
+.caseline{stroke-dasharray:600;stroke-dashoffset:600;animation:drawline .5s forwards}
+@keyframes drawline{to{stroke-dashoffset:0}}
+.verdict,.predict,.final{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:640px}
+.stamp{font-family:var(--stencil);font-size:44px;letter-spacing:.08em;border:5px solid currentColor;padding:6px 20px;transform:rotate(-7deg);opacity:0;animation:stampin .35s forwards}
+.verdict.ok .stamp{color:#3a8f4a}.verdict.cold .stamp{color:var(--blood)}
+@keyframes stampin{0%{opacity:0;transform:rotate(-7deg) scale(2)}80%{opacity:1;transform:rotate(-7deg) scale(.94)}100%{opacity:1;transform:rotate(-7deg) scale(1)}}
+.vbecause{color:#d9c8a4;max-width:560px;margin:20px 0;line-height:1.7;font-size:15px}
+.vbtn{font-family:var(--stencil);background:#2a1a12;color:var(--amber);border:1px solid #4a3a24;border-radius:5px;padding:9px 22px;cursor:pointer;font-size:15px}
+.predq{color:#fff;font-size:19px;margin-bottom:22px;line-height:1.4}
+.predopts{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.predopt{font-family:var(--stencil);background:#241a12;color:var(--amber);border:1px solid #6a5a3a;border-radius:6px;padding:10px 18px;cursor:pointer;font-size:15px}
+.predopt.good{background:#1f3a23;color:#7fdc8f;border-color:#3a8f4a}
+.predopt.bad{background:#3a1714;color:#e8a59e;border-color:var(--blood)}
+.predtag{color:#9a8f7a;margin-top:18px;letter-spacing:.1em;font-size:12px;font-family:var(--type)}
+#casebook{position:relative;min-height:560px;background:var(--soot);border:1px solid var(--frame);border-radius:10px;padding:20px;overflow:auto}
+.cb-head{display:flex;align-items:center;gap:16px}
+.cb-head h2{font-family:var(--stencil);color:var(--amber);letter-spacing:.06em;margin:0;font-size:22px}
+.cb-inst{color:#9a8f7a;font-size:13px;margin-left:auto;font-family:var(--type)}
+.cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:18px}
+.ccard{display:flex;flex-direction:column;gap:6px;text-align:left;background:#1e1812;border:1px solid #3a2c1c;border-radius:8px;padding:14px;cursor:pointer;color:#d9c8a4}
+.ccard.current{border-color:var(--brass);box-shadow:0 0 0 1px rgba(202,146,47,.35)}
+.ccard.solved{opacity:.85}
+.ccard.locked{opacity:.4;cursor:not-allowed}
+.ccard .cno{font-family:var(--type);color:var(--ember);font-size:13px}
+.ccard .cttl{font-size:17px;color:#fff}
+.ccard .csub{font-size:12px;color:var(--amber);font-family:var(--stencil)}
+.final{padding:40px 24px;margin:0 auto}
+.final h2{font-family:var(--stencil);color:var(--amber);letter-spacing:.05em}
+.final-stats{color:var(--amber);font-family:var(--type);margin:10px 0 20px}
+.final-line{color:#d9c8a4;max-width:600px;line-height:1.8;font-style:italic}
+@media (max-width:640px){
+ .case-title{font-size:14px}.case-brief{font-size:12px}.case-prompt{font-size:13px}
+ .cb-grid{grid-template-columns:1fr 1fr}.cb-head h2{font-size:18px}
+ .stamp{font-size:32px}.predq{font-size:16px}.predopt{padding:9px 14px;font-size:14px}
+}
+@media (prefers-reduced-motion: reduce){.caseline{animation:none;stroke-dashoffset:0}.stamp{animation:none;opacity:1}.pin.wrong{animation:none}}
 </style>
 </head>
 <body>
@@ -154,6 +208,7 @@ svg.strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none
   <section id="title"></section>
   <section id="board" class="hidden"></section>
   <section id="scene" class="hidden"></section>
+  <section id="casebook" class="hidden"></section>
   <div id="dossier" class="hidden"></div>
 </div>
 <script>
@@ -465,7 +520,161 @@ var BOARD_PINS=[
  {id:"pin-billygrade",kind:"photo",ref:"billygrade",x:62,y:46,rot:-3,tack:"#9a6cd0"},
  {id:"pin-swing",kind:"photo",ref:"swing",x:74,y:46,rot:3,tack:"#9a6cd0"},
  {id:"pin-ruby",kind:"photo",ref:"ruby",x:72,y:72,rot:-2,tack:"#cf6b86"},
- {id:"pin-sapphire",kind:"event",ref:"s6-curse",x:47,y:74,rot:2,tack:"#3e8bd0"}
+ {id:"pin-sapphire",kind:"event",ref:"s6-curse",x:47,y:74,rot:2,tack:"#3e8bd0"},
+ {id:"pin-vicente",kind:"photo",ref:"vicente",x:90,y:30,rot:3,tack:"#1c1c1c"},
+ {id:"pin-finn",kind:"photo",ref:"finn",x:30,y:54,rot:-2,tack:"#b8862b"},
+ {id:"pin-holford",kind:"photo",ref:"holford",x:54,y:34,rot:2,tack:"#9aa0a8"}
+];
+var CASES=[
+ {id:"c1-mole",season:1,no:"01",
+  titleZh:"加里森的眼线",titleEn:"The mole in the Garrison",
+  briefZh:"丘吉尔要追回失窃的机枪,坎贝尔在谢尔比家里安插了一双眼睛。是谁?",
+  briefEn:"Churchill wants the stolen guns back; Campbell has planted a pair of eyes in the Shelby home. Whose?",
+  evidence:[
+   {scene:"prologue",clueZh:"战后小希思,谢尔比靠帽檐里的剃刀立威——血亲抱团,外人难入。",clueEn:"Post-war Small Heath: the Shelbys rule with razors in their caps — blood sticks together, outsiders don't get in."},
+   {scene:"s1-guns",clueZh:"一箱本不该碰的机枪惊动了丘吉尔,警方急于在帮派内部安一个人。",clueEn:"A crate of guns they never should have touched reaches Churchill — the police badly need someone on the inside."},
+   {scene:"s1-campbell",clueZh:"坎贝尔从贝尔法斯特赴任,放话要在帮派里'安一双眼睛'。",clueEn:"Campbell arrives from Belfast, vowing to plant 'a pair of eyes' inside the gang."},
+   {scene:"s1-grace",clueZh:"加里森新来一名歌女,逢人便打听谢尔比家的事;有人见她进出过警局。",clueEn:"A new singer turns up at the Garrison, asking about the family — and has been seen coming and going at the police station."},
+   {scene:"s1-freddie",clueZh:"共产党人 Freddie 与艾达秘密成婚——这家人自己也藏着秘密。",clueEn:"The communist Freddie has secretly married Ada — this family keeps secrets of its own."}
+  ],
+  steps:[
+   {kind:"accuse",
+    promptZh:"坎贝尔安插在谢尔比家的眼线是谁?",promptEn:"Who is Campbell's informant inside the Shelby world?",
+    suspects:["pin-grace","pin-ada","pin-polly","pin-john"],answer:"pin-grace",
+    becauseZh:"Grace 在警方正需要内线时'恰好'出现,打听家事、又被见进出警局——血亲不会替王权当眼线,外来者才会。",
+    becauseEn:"Grace appears just as the police need eyes, asks about the family, and is seen at the station. Blood wouldn't inform for the Crown — the newcomer would."},
+   {kind:"predict",beforeScene:"s1-showdown",
+    promptZh:"赛道摊牌,Kimber 开枪——谁替 Tommy 挡下这一枪?",promptEn:"At the showdown Kimber fires — who takes the bullet meant for Tommy?",
+    options:[{labelZh:"Tommy 自己中枪",labelEn:"Tommy is hit"},{labelZh:"Danny 替他挡枪",labelEn:"Danny shields him"},{labelZh:"无人中枪",labelEn:"No one is hit"}],answer:1}
+  ],
+  seeds:["bullet"],closes:[],revealSeq:["s1-showdown"]},
+
+ {id:"c2-bullet",season:2,no:"02",
+  titleZh:"坟前那一枪",titleEn:"The bullet at the grave",
+  briefZh:"假处决之后,坎贝尔倒在血泊里。谁扣了扳机?",
+  briefEn:"After the mock execution, Campbell lies dead. Who pulled the trigger?",
+  evidence:[
+   {scene:"s2-garrison",clueZh:"IRA 炸了加里森,胁迫 Tommy 替他们杀人——四面皆敌。",clueEn:"The IRA bomb the Garrison and blackmail Tommy into killing for them — enemies on every side."},
+   {scene:"s2-epsom",clueZh:"坎贝尔与丘吉尔逼 Tommy 在赛马日行刺元帅;坎贝尔握着全家的命门。",clueEn:"Campbell and Churchill force Tommy to assassinate a Field Marshal; Campbell holds the whole family's leash."},
+   {scene:"s2-michael",clueZh:"波莉失散的儿子归来——她比谁都清楚坎贝尔对她做过什么,恨意最深。",clueEn:"Polly's lost son returns — she of all people knows what Campbell did to her, and hates him most."}
+  ],
+  steps:[
+   {kind:"accuse",
+    promptZh:"坟边枪杀坎贝尔的是谁?",promptEn:"Who shoots Campbell dead at the graveside?",
+    suspects:["pin-polly","pin-tommy","pin-arthur","pin-michael"],answer:"pin-polly",
+    becauseZh:"动机最私人的人是波莉——坎贝尔施暴于她;Tommy 此刻正被放过、需要他活着办差,没有人比波莉更想要这一枪。",
+    becauseEn:"The most personal motive is Polly's — Campbell assaulted her. Tommy is being spared to do a job; no one wants this shot more than she does."}
+  ],
+  seeds:[],closes:["bullet"],revealSeq:["s2-polly"]},
+
+ {id:"c3-gala",season:3,no:"03",
+  titleZh:"晚宴上的子弹",titleEn:"The bullet at the gala",
+  briefZh:"募捐晚宴上一声'For Angel!',一枪射向 Tommy。这一夜将牵出两条要命的线。",
+  briefEn:"At the charity gala — a cry of 'For Angel!', a shot at Tommy. This night sets two deadly threads in motion.",
+  evidence:[
+   {scene:"s3-wedding",clueZh:"庄园婚礼上一名俄国奸细对错暗号被当场处决——俄国人很危险,但他们是被你杀的。",clueEn:"At the Arrow House wedding a Russian agent gives the wrong code and is executed — the Russians are dangerous, but it's you killing them."},
+   {scene:"s3-russia",clueZh:"白俄一家与神父休斯设局;另有传闻:伦敦一户意大利人记着仇——儿子 Angel 被 John 弄瞎了眼。",clueEn:"The White Russians and Father Hughes are plotting; and word is an Italian family in London nurses a grudge — a son, Angel, was blinded by John Shelby."},
+   {scene:"s3-tunnel",clueZh:"Tommy 掘隧道劫走俄国人的珍宝——可这是抢劫,不是当众喊'For Angel'的血亲复仇。",clueEn:"Tommy tunnels in and robs the Russians' treasure — but that's theft, not a public 'For Angel' blood-cry."}
+  ],
+  steps:[
+   {kind:"predict",beforeScene:"s3-grace",
+    promptZh:"枪声响起,射向 Tommy 的子弹会打中谁?",promptEn:"A shot rings out. Who does the bullet meant for Tommy hit?",
+    options:[{labelZh:"Tommy",labelEn:"Tommy"},{labelZh:"Grace",labelEn:"Grace"},{labelZh:"Arthur",labelEn:"Arthur"}],answer:1},
+   {kind:"connect",
+    promptZh:"把今晚的线索钉进案卷:Grace 当晚戴着那条会要命的项链——连出这条因果。",promptEn:"Pin tonight's clue: Grace was wearing the necklace that will kill — draw the link.",
+    links:[["pin-grace","pin-sapphire"]],
+    becauseZh:"Grace 戴着那条蓝宝石。这条'被诅咒'的线从今夜起,会一路走到鲁比。",
+    becauseEn:"Grace wears the sapphire. From tonight, this 'cursed' thread runs all the way to Ruby."}
+  ],
+  seeds:["sapphire"],closes:[],revealSeq:["s3-grace"]},
+
+ {id:"c4-vendetta",season:4,no:"04",
+  titleZh:"血仇之链",titleEn:"The vendetta chain",
+  briefZh:"西西里人渡海而来。把这场血亲复仇按因果顺序排成一条链。",
+  briefEn:"The Sicilians cross the ocean. Reconstruct the blood vendetta, link by link, in order.",
+  evidence:[
+   {scene:"s4-noose",clueZh:"全家险些上绞架,平安夜被 Tommy 最后一刻赎回——元气大伤。",clueEn:"The family nearly hangs; Tommy buys their pardons on Christmas Eve — badly weakened."},
+   {scene:"s4-luca",clueZh:"纽约黑手党卢卡·尚格莱特登门,为死去的父亲维森特与兄弟安吉尔索命。",clueEn:"New York mafioso Luca Changretta arrives to avenge his dead father Vicente and brother Angel."},
+   {scene:"s4-john",clueZh:"门廊外机枪齐射,John Shelby 当场殒命。",clueEn:"Machine guns rake the doorstep; John Shelby dies where he stands."},
+   {scene:"s4-gold",clueZh:"Tommy 引入吉普赛枪手与拳手金家父子助阵。",clueEn:"Tommy brings in the Romani Golds — gunman and boxer — to even the odds."},
+   {scene:"s4-mp",clueZh:"诈死的亚瑟出手了结卢卡;血仇收场。",clueEn:"A faked-dead Arthur finishes Luca; the vendetta ends."}
+  ],
+  steps:[
+   {kind:"connect",
+    promptZh:"按因果顺序依次连线,排出整条血仇(起因:John 弄瞎了 Angel):维森特→Grace、亚瑟→维森特、卢卡→John、亚瑟→卢卡。",
+    promptEn:"Connect the pins in causal order (origin: John blinded Angel): Vicente→Grace, Arthur→Vicente, Luca→John, Arthur→Luca.",
+    links:[["pin-vicente","pin-grace"],["pin-arthur","pin-vicente"],["pin-luca","pin-john"],["pin-arthur","pin-luca"]],
+    becauseZh:"John 弄瞎 Angel → 维森特派人杀了 Grace → 亚瑟杀维森特 → 卢卡为父杀 John → 诈死的亚瑟终结卢卡。一报还一报。",
+    becauseEn:"John blinds Angel → Vicente's men kill Grace → Arthur kills Vicente → Luca kills John for his father → a faked-dead Arthur ends Luca. Blood for blood."}
+  ],
+  seeds:["changretta"],closes:["changretta"],revealSeq:["s4-mp"]},
+
+ {id:"c5-leak",season:5,no:"05",
+  titleZh:"内鬼是谁",titleEn:"The informant",
+  briefZh:"刺杀莫斯利的计划崩了——有人把它捅给了 IRA。顺着泄密的链子连下去。",
+  briefEn:"The plot to kill Mosley collapses — someone tipped the IRA. Trace the leak, link by link.",
+  evidence:[
+   {scene:"s5-crash",clueZh:"华尔街崩盘,迈克尔抗命未套现、害家族巨亏——他与 Tommy 早生嫌隙。",clueEn:"The Crash wipes out the fortune after Michael defies orders — he and Tommy are already at odds."},
+   {scene:"s5-mosley",clueZh:"议员 Tommy 周旋于法西斯莫斯利——这是要除掉的目标。",clueEn:"MP Tommy circles the fascist Mosley — the target to be removed."},
+   {scene:"s5-bonnie",clueZh:"Billy Boys 钉死 Bonnie,逼反阿贝拉马——刺杀计划随之定下。",clueEn:"The Billy Boys crucify Bonnie, turning Aberama — the assassination plan is set."},
+   {scene:"s5-plot",clueZh:"计划部署完毕,却走漏了风声:有人多嘴,把它说给了爱嚼舌的 Billy Grade。",clueEn:"The plan is in place — but it leaks: someone talks, letting it slip to the loose-lipped Billy Grade."},
+   {scene:"s5-traitor",clueZh:"迈克尔和美籍妻子吉娜暗中要夺家族权柄——但那是抢钱抢位,不是把刺杀计划卖给 IRA。",clueEn:"Michael and his American wife Gina move to seize the family — but that's about money and power, not selling a plot to the IRA."}
+  ],
+  steps:[
+   {kind:"connect",
+    promptZh:"连出泄密的链子:谁先走漏 → 谁告密 IRA。(别被迈克尔的夺权带偏。)",promptEn:"Draw the leak: who lets it slip → who tips the IRA. (Don't be misled by Michael's power grab.)",
+    links:[["pin-finn","pin-billygrade"],["pin-billygrade","pin-swing"]],
+    becauseZh:"芬恩嘴快,把计划说给了 Billy Grade;Billy Grade 转手告密 IRA(斯温)。迈克尔的背叛是商业夺权,与这次泄密无关——他是障眼法。",
+    becauseEn:"Finn lets it slip to Billy Grade; Billy Grade tips the IRA (Swing). Michael's betrayal is a commercial power grab — a red herring, not this leak."},
+   {kind:"predict",beforeScene:"s5-fog",
+    promptZh:"行刺崩盘,Tommy 独立雾中,枪口抵住自己太阳穴——他开枪了吗?",promptEn:"The plot collapses; alone in the fog, Tommy lifts the pistol to his own temple — does he fire?",
+    options:[{labelZh:"开枪了",labelEn:"He fires"},{labelZh:"没有(黑屏,四年后)",labelEn:"No — cut to black, four years on"}],answer:1}
+  ],
+  seeds:["leak"],closes:[],revealSeq:["s5-fog"]},
+
+ {id:"c6-curse",season:6,no:"06",
+  titleZh:"诅咒与假死",titleEn:"The curse and the false death",
+  briefZh:"被诅咒的蓝宝石终于应验;而有人正告诉 Tommy:你快死了。",
+  briefEn:"The cursed sapphire comes due at last; and someone is telling Tommy he is dying.",
+  evidence:[
+   {scene:"s6-bodies",clueZh:"IRA 把波莉、阿贝拉马、Barney 的尸体送回——S5 那通告密的电话,代价在此。",clueEn:"The IRA return the bodies of Polly, Aberama and Barney — the price of that S5 phone call comes due."},
+   {scene:"s6-boston",clueZh:"戒酒的 Tommy 做着波士顿鸦片生意;迈克尔记恨波莉之死,起了弑兄之心。",clueEn:"Sober Tommy works the Boston opium trade; Michael, blaming him for Polly, wants him dead."},
+   {scene:"s6-curse",clueZh:"Grace 的蓝宝石辗转克死了七岁的康妮;Evadne 以此诅咒 Tommy——也将失去七岁的女儿。",clueEn:"Grace's sapphire passes on and kills seven-year-old Connie; Evadne curses Tommy to lose his own daughter at seven."},
+   {scene:"s6-diagnosis",clueZh:"霍尔福德医生诊断 Tommy 患'结核瘤'将死;诊断来得'恰逢其时'——背后晃着莫斯利的影子。",clueEn:"Dr. Holford diagnoses a fatal 'tuberculoma'; the diagnosis is suspiciously convenient — Mosley's shadow falls behind it."}
+  ],
+  steps:[
+   {kind:"predict",beforeScene:"s6-ruby",
+    promptZh:"诅咒点名一个七岁的孩子。它会带走谁?",promptEn:"The curse names a child of seven. Who does it take?",
+    options:[{labelZh:"查理",labelEn:"Charlie"},{labelZh:"鲁比",labelEn:"Ruby"},{labelZh:"无人,只是迷信",labelEn:"No one — just superstition"}],answer:1},
+   {kind:"connect",
+    promptZh:"把诅咒的最后一环连上:蓝宝石→鲁比。",promptEn:"Draw the curse's final link: the sapphire → Ruby.",
+    links:[["pin-sapphire","pin-ruby"]],
+    becauseZh:"那条从 Grace 起的蓝宝石,辗转克死康妮,终于应验在七岁的鲁比身上。诅咒收口。",
+    becauseEn:"The sapphire that began with Grace, having killed Connie, comes due at last on seven-year-old Ruby. The curse closes."},
+   {kind:"accuse",
+    promptZh:"有人在 Tommy 的'死讯'背后操盘。是谁?",promptEn:"Someone is behind Tommy's 'death sentence'. Who?",
+    suspects:["pin-mosley","pin-holford","pin-michael","pin-tommy"],answer:"pin-mosley",
+    becauseZh:"诊断对莫斯利太'方便'了——他买通霍尔福德谎称 Tommy 将死,诱他自尽。霍尔福德只是工具,迈克尔的恨另有出口,Tommy 并非真病。",
+    becauseEn:"The diagnosis is far too convenient for Mosley — he bought Holford to tell Tommy he's dying and nudge him to end himself. Holford is the tool; Michael's hate runs elsewhere; Tommy isn't truly ill."}
+  ],
+  seeds:[],closes:["sapphire","leak"],revealSeq:["s6-ruby","s6-diagnosis"]},
+
+ {id:"c7-fog",season:7,no:"07",
+  titleZh:"两片雾",titleEn:"Two fogs",
+  briefZh:"Tommy 两次独立雾中。把崩溃的那一片,与重生的那一片,连成首尾呼应。",
+  briefEn:"Twice Tommy stands alone in the fog. Link the fog of collapse to the fog of rebirth.",
+  evidence:[
+   {scene:"s5-fog",clueZh:"第一片雾:他幻见亡妻 Grace,枪口抵住太阳穴——崩溃。",clueEn:"The first fog: he hallucinates his dead wife Grace and lifts the pistol to his temple — collapse."},
+   {scene:"s6-finale",clueZh:"第二片雾:鲁比的鬼魂点醒他'你没病,去点火'——重生。",clueEn:"The second fog: Ruby's ghost wakes him — 'you're not ill, go light the fire' — rebirth."}
+  ],
+  steps:[
+   {kind:"connect",
+    promptZh:"把两片雾连成镜像:Grace 的幻影(崩溃)↔ 鲁比的鬼魂(重生)。",promptEn:"Mirror the two fogs: Grace's phantom (collapse) ↔ Ruby's ghost (rebirth).",
+    links:[["pin-grace","pin-ruby"]],
+    becauseZh:"同一片田野,同一场雾。一次让他想死,一次让他活下去——首尾呼应,Tommy·Shelby 还活着。",
+    becauseEn:"The same field, the same fog. One nearly kills him, one keeps him alive — bookends. Tommy Shelby is still alive."}
+  ],
+  seeds:[],closes:["ghosts"],revealSeq:["s6-finale","finale-end"]}
 ];
 var T={
  start:{zh:"按下开始",en:"Press start"},
@@ -479,14 +688,38 @@ var T={
  next:{zh:"下一幕",en:"Next"},
  appears:{zh:"出场",en:"Appears"},
  resume:{zh:"继续上次",en:"Resume"},
- propHint:{zh:"点击场景中发光的物件 · 进入下一幕",en:"Click the glowing object to go on"}
+ propHint:{zh:"点击场景中发光的物件 · 进入下一幕",en:"Click the glowing object to go on"},
+ investigate:{zh:"开始查案",en:"Open the casebook"},
+ freeBrowse:{zh:"自由浏览",en:"Free browse"},
+ casebook:{zh:"案卷夹",en:"Casebook"},
+ evidenceLab:{zh:"证物",en:"Evidence"},
+ accuseHint:{zh:"点一张照片,指认凶手",en:"Tap a photo to name them"},
+ connectHintT:{zh:"按因果顺序点选图钉,连出红线",en:"Tap pins in causal order to draw the thread"},
+ callIt:{zh:"押一个 · 督察的直觉",en:"Call it — Campbell's instinct"},
+ caseClosed:{zh:"CASE CLOSED",en:"CASE CLOSED"},
+ coldCase:{zh:"COLD CASE",en:"COLD CASE"},
+ becauseLab:{zh:"为什么",en:"Why"},
+ revealNow:{zh:"看真相",en:"See what happened"},
+ hunch:{zh:"督察的直觉",en:"Campbell's hunch"},
+ instinctLab:{zh:"直觉准星",en:"Instinct"},
+ solvedLab:{zh:"已结案",en:"Closed"},
+ lockedLab:{zh:"未解锁",en:"Locked"},
+ finalVerdict:{zh:"对 Tommy Shelby 的最终裁定",en:"The verdict on Tommy Shelby"}
 };
 /* === 纯逻辑 === */
 var lang="zh";
 function t(k){ var e=T[k]; return e? (e[lang]||e.zh) : k; }
-var state={lang:"zh",muted:false,lastBeat:null,lastThread:"all",visited:{}};
+var state={lang:"zh",muted:false,lastBeat:null,lastThread:"all",visited:{},
+  cases:{solved:{},current:null,step:0,examined:{},connected:{}},
+  instinct:{correct:0,total:0}};
 function save(){ try{ localStorage.setItem("pbd",JSON.stringify(state)); }catch(e){} }
-function load(){ try{ var r=localStorage.getItem("pbd"); if(r){ var o=JSON.parse(r); for(var k in o) state[k]=o[k]; lang=state.lang; } }catch(e){} }
+function load(){ try{ var r=localStorage.getItem("pbd"); if(r){ var o=JSON.parse(r); for(var k in o) state[k]=o[k]; lang=state.lang; }
+  if(!state.cases) state.cases={solved:{},current:null,step:0,examined:{},connected:{}};
+  if(!state.cases.solved) state.cases.solved={};
+  if(!state.cases.examined) state.cases.examined={};
+  if(!state.cases.connected) state.cases.connected={};
+  if(!state.instinct) state.instinct={correct:0,total:0};
+ }catch(e){} }
 /* === 音频 === */
 var AC=null,MG=null,_amb=null;
 function _ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); MG=AC.createGain(); MG.gain.value=state.muted?0:0.55; MG.connect(AC.destination); }catch(e){} } if(AC&&AC.state==="suspended"){try{AC.resume();}catch(e){}} return AC; }
@@ -501,6 +734,10 @@ function sfx(kind){ var ac=_ac(); if(!ac||state.muted)return; var t=ac.currentTi
  else if(kind==="coin"){ tone(1180,0.1,"square",0.15); tone(1560,0.12,"square",0.12); }
  else if(kind==="knife"){ noise(0.12,0.3,3200); }
  else if(kind==="enter"){ tone(196,0.32,"triangle",0.14,294); }
+ else if(kind==="stamp"){ noise(0.09,0.5,500); tone(150,0.14,"square",0.28,90); }
+ else if(kind==="buzz"){ tone(120,0.22,"sawtooth",0.22,80); }
+ else if(kind==="pluck"){ tone(520,0.16,"triangle",0.2,360); }
+ else if(kind==="tick"){ tone(880,0.05,"square",0.1); }
  else { tone(330,0.1,"square",0.1); }
 }
 function startAmbient(season){ var ac=_ac(); if(!ac||state.muted)return; if(_amb&&_amb.season===season)return; stopAmbient();
@@ -544,8 +781,90 @@ function __selftest(){
   ok(ord[0]==="prologue"&&ord[ord.length-1]==="finale-end","时间序应 prologue→终幕");
   var to=threadOrder("sapphire");
   ok(to.length>=2&&to[0]==="s3-grace"&&to[to.length-1]==="s6-ruby","蓝宝石暗线序应 grace→ruby");
+  /* --- 推理层 (Task A1/A2/A3) --- */
+  ["pin-vicente","pin-finn","pin-holford"].forEach(function(id){ ok(pids[id],"应存在新图钉 "+id); });
+  ok(state.cases&&typeof state.cases.solved==="object","state.cases.solved 应存在");
+  ok(state.instinct&&typeof state.instinct.correct==="number","state.instinct 应存在");
+  ok(Array.isArray(CASES)&&CASES.length===7,"CASES 应为 7 案");
+  var caseIds={};
+  CASES.forEach(function(c){
+    ok(!caseIds[c.id],"CASE id 重复:"+c.id); caseIds[c.id]=1;
+    ok(c.titleZh&&c.titleEn&&c.briefZh&&c.briefEn,"case "+c.id+" 双语标题/简介缺失");
+    (c.evidence||[]).forEach(function(e){
+      ok(sids[e.scene],"case "+c.id+" 证物场景无效:"+e.scene);
+      ok(e.clueZh&&e.clueEn,"case "+c.id+" 证物 "+e.scene+" 批注双语缺失");
+    });
+    ok((c.steps||[]).length>=1,"case "+c.id+" 至少 1 步");
+    (c.steps||[]).forEach(function(st,i){
+      if(st.kind==="accuse"){
+        ok(st.suspects.indexOf(st.answer)>-1,"case "+c.id+" step"+i+" answer 不在 suspects 内");
+        st.suspects.forEach(function(p){ok(pids[p],"case "+c.id+" suspect 图钉无效:"+p);});
+        ok(st.becauseZh&&st.becauseEn,"case "+c.id+" step"+i+" because 双语缺失");
+      } else if(st.kind==="connect"){
+        ok(st.links&&st.links.length>=1,"case "+c.id+" connect 应有 links");
+        st.links.forEach(function(L){ok(pids[L[0]]&&pids[L[1]],"case "+c.id+" connect 图钉无效:"+L);});
+        ok(st.becauseZh&&st.becauseEn,"case "+c.id+" step"+i+" because 双语缺失");
+      } else if(st.kind==="predict"){
+        ok(sids[st.beforeScene],"case "+c.id+" predict beforeScene 无效:"+st.beforeScene);
+        ok(st.options.length>=2&&st.options[st.answer],"case "+c.id+" predict 选项/答案无效");
+      } else ok(false,"case "+c.id+" step"+i+" 未知 kind:"+st.kind);
+    });
+    (c.revealSeq||[]).forEach(function(id){ok(sids[id],"case "+c.id+" revealSeq 场景无效:"+id);});
+    (c.seeds||[]).concat(c.closes||[]).forEach(function(th){
+      ok(THREADS.some(function(t){return t.id===th;}),"case "+c.id+" 暗线 id 无效:"+th);
+    });
+  });
+  /* --- 推理引擎 (Task B) --- */
+  ok(typeof caseById==="function"&&caseById("c5-leak").titleEn==="The informant","caseById 应能查到案");
+  ok(caseStatus("c1-mole")==="current"||caseStatus("c1-mole")==="solved","首案应为 current(或已解)");
+  ok(caseStatus("c7-fog")==="locked"||state.cases.solved["c6-curse"],"末案在前案未解时应 locked");
+  var _c4=caseById("c4-vendetta").steps[0];
+  ok(connectMatches(_c4,[["pin-vicente","pin-grace"],["pin-arthur","pin-vicente"],["pin-luca","pin-john"],["pin-arthur","pin-luca"]]),"正确链应判对");
+  ok(!connectMatches(_c4,[["pin-arthur","pin-vicente"],["pin-vicente","pin-grace"]]),"乱序应判错");
+  ok(linkExpectedAt(_c4,0,"pin-vicente","pin-grace"),"第0跳应接受 vicente→grace");
+  ok(!linkExpectedAt(_c4,0,"pin-arthur","pin-vicente"),"第0跳不应接受 arthur→vicente");
+  ok(ratingFromCost(0,0)===3&&ratingFromCost(1,0)===2&&ratingFromCost(0,2)===1,"成色:0错0提示=3,1错=2,2提示=1");
+  var _sv=JSON.stringify(state.cases.solved);
+  state.cases.solved={"c1-mole":{rating:3},"c2-bullet":{rating:3}};
+  ok(threadLit("bullet")===true,"子弹线两案皆结应点亮");
+  ok(threadLit("sapphire")===false,"蓝宝石线未结不应点亮");
+  state.cases.solved=JSON.parse(_sv);
   return fails.length? ("FAIL("+fails.length+"): "+fails.join(" | ")) : "PASS";
 }
+/* === 推理引擎 (Task B) === */
+function caseById(id){for(var i=0;i<CASES.length;i++)if(CASES[i].id===id)return CASES[i];}
+function caseIndex(id){for(var i=0;i<CASES.length;i++)if(CASES[i].id===id)return i;return -1;}
+function caseStatus(id){
+  if(state.cases.solved[id])return "solved";
+  var i=caseIndex(id);
+  if(i===0)return "current";
+  return (i>0&&state.cases.solved[CASES[i-1].id])?"current":"locked";
+}
+function firstUnsolvedCase(){ for(var i=0;i<CASES.length;i++)if(!state.cases.solved[CASES[i].id])return CASES[i].id; return null; }
+function accuseCorrect(step,pinId){ return step.kind==="accuse" && pinId===step.answer; }
+function linkExpectedAt(step,n,from,to){ var L=step.links[n]; return !!L && L[0]===from && L[1]===to; }
+function connectMatches(step,links){
+  if(!links||links.length!==step.links.length)return false;
+  for(var i=0;i<links.length;i++){ if(links[i][0]!==step.links[i][0]||links[i][1]!==step.links[i][1])return false; }
+  return true;
+}
+function ratingFromCost(wrong,hints){ var r=3-wrong-hints; return r<1?1:r; }
+function recordInstinct(okFlag){ state.instinct.total++; if(okFlag)state.instinct.correct++; save(); }
+function casesCoveringScene(sceneId){
+  return CASES.filter(function(c){
+    var inEv=(c.evidence||[]).some(function(e){return e.scene===sceneId;});
+    var inRev=(c.revealSeq||[]).indexOf(sceneId)>-1;
+    return inEv||inRev;
+  });
+}
+function threadLit(thId){
+  var th=THREADS.filter(function(x){return x.id===thId;})[0]; if(!th)return false;
+  return th.beatIds.every(function(bid){
+    var cs=casesCoveringScene(bid);
+    return cs.length>0 && cs.some(function(c){return state.cases.solved[c.id];});
+  });
+}
+function litThreads(){ return THREADS.filter(function(t){return threadLit(t.id);}).map(function(t){return t.id;}); }
 /* === 渲染 === */
 var THC={family:"#6e3b34",sapphire:"#3e8bd0"};
 function charById(id){for(var i=0;i<CHARACTERS.length;i++)if(CHARACTERS[i].id===id)return CHARACTERS[i];}
@@ -577,6 +896,7 @@ function pinRefScene(p){
 }
 function renderBoard(){
  var el=document.getElementById("board");
+ if(boardMode==="case"&&activeCaseData){ renderCaseBoard(el); return; }
  var thbtns='<button class="thb" data-th="all">'+t("allThreads")+'</button>'+THREADS.map(function(th){
   var done=th.beatIds.every(function(x){return state.visited[x];});
   return '<button class="thb" data-th="'+th.id+'"><span class="dot" style="background:'+th.color+'"></span>'+(lang==="zh"?th.nameZh:th.nameEn)+(done?' <span class="seen">✓</span>':'')+'</button>';
@@ -621,7 +941,7 @@ function renderStrings(thId){
  svg.innerHTML=h;
 }
 var _resizeWired=false;
-function wireResize(){ if(_resizeWired)return; _resizeWired=true; window.addEventListener("resize",function(){ if(document.getElementById("bwrap")) renderStrings(state.lastThread||"all"); }); }
+function wireResize(){ if(_resizeWired)return; _resizeWired=true; window.addEventListener("resize",function(){ if(!document.getElementById("bwrap"))return; if(boardMode==="case") paintCaseStrings(); else renderStrings(state.lastThread||"all"); }); }
 function filterThread(thId){
  state.lastThread=thId; state.season=null; save();
  document.querySelectorAll(".thb").forEach(function(b){b.classList.toggle("active",b.dataset.th===thId);});
@@ -644,7 +964,11 @@ function filterSeason(sn){
  var lp=document.getElementById("lensplay");
  if(lp){ var n=beatsForSeason(sn).length; lp.innerHTML="▶ "+(lang==="zh"?("看 S"+sn+" · "+n+" 幕"):("Watch S"+sn+" · "+n)); lp.onclick=function(){playLens(beatsForSeason(sn),"S"+sn);}; lp.classList.remove("hidden"); }
 }
-function setLang(l){lang=l;state.lang=l;save();renderBoard();}
+function setLang(l){lang=l;state.lang=l;save();
+ var cb=document.getElementById("casebook");
+ if(cb&&!cb.classList.contains("hidden")){ if(state.cases.solved["c7-fog"]&&!state.cases.current) renderFinalVerdict(); else renderCasebook(); }
+ else renderBoard();
+}
 function threadsForScene(id){ var r=[]; THREADS.forEach(function(t){ if(t.beatIds.indexOf(id)>-1) r.push(t.id); }); return r; }
 var curBeat=null;
 function openCharFile(cid){
@@ -685,6 +1009,201 @@ function openDossier(sceneId){
  d.querySelector(".dz-go").onclick=function(){closeDossier();playLens([curBeat],(lang==="zh"?s.titleZh:s.titleEn));};
 }
 function closeDossier(){document.getElementById("dossier").classList.add("hidden");}
+/* === 推理玩法:案件流程 (Task C/D) === */
+var boardMode="free", activeCase=null, activeCaseData=null, sceneCtx=null;
+var connTap=null, caseLinks=[], stepProgress=0, caseCost={wrong:0,hints:0};
+function showOnly(id){ ["title","casebook","board","scene"].forEach(function(x){ var e=document.getElementById(x); if(!e)return; if(x===id){ e.classList.remove("hidden"); } else { e.classList.add("hidden"); if(x==="scene") e.classList.remove("in"); } }); }
+function openCase(id){
+  if(caseStatus(id)==="locked")return;
+  activeCase=id; activeCaseData=JSON.parse(JSON.stringify(caseById(id)));
+  boardMode="case"; state.cases.current=id; state.cases.step=0;
+  connTap=null; caseLinks=[]; stepProgress=0; caseCost={wrong:0,hints:0}; save();
+  showOnly("board"); view="board"; enterStep();
+}
+function exitToCasebook(){ stopAmbient(); boardMode="free"; activeCase=null; activeCaseData=null; sceneCtx=null; lens={order:[],label:""}; renderCasebook(); }
+function enterStep(){
+  var c=activeCaseData; if(!c)return;
+  if(state.cases.step>=c.steps.length){ solveCase(); return; }
+  var st=c.steps[state.cases.step]; connTap=null; stepProgress=0;
+  showOnly("board"); renderBoard();
+  if(st.kind==="predict"){ doPredict(st); }
+}
+function advanceStep(){ state.cases.step++; save(); enterStep(); }
+function renderCaseBoard(el){
+  var c=activeCaseData, st=c.steps[state.cases.step]||c.steps[c.steps.length-1];
+  var evChips=c.evidence.map(function(e){
+    var seen=state.cases.examined[e.scene]?" seen":"";
+    return '<button class="evchip'+seen+'" data-ev="'+e.scene+'">'+(state.cases.examined[e.scene]?"✓ ":"")+sceneById(e.scene).no+'</button>';
+  }).join("");
+  var stepHint = st.kind==="accuse"? t("accuseHint") : st.kind==="connect"? t("connectHintT") : t("callIt");
+  var prompt = lang==="zh"? st.promptZh : st.promptEn;
+  el.innerHTML='<div class="cb"><button class="case-back">&#9664; '+t("casebook")+'</button>'
+   +'<div style="display:flex;gap:8px;align-items:center"><button class="mutebtn" aria-label="mute">'+(state.muted?"🔇":"🔊")+'</button><div class="lang"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div></div>'
+   +'<div class="casehead"><div class="case-title">'+c.no+' · '+(lang==="zh"?c.titleZh:c.titleEn)+'</div>'
+   +'<div class="case-brief">'+(lang==="zh"?c.briefZh:c.briefEn)+'</div>'
+   +'<div class="case-ev"><span class="lab">'+t("evidenceLab")+'</span>'+evChips+'</div>'
+   +'<div class="case-prompt">'+prompt+'</div><div class="case-stephint">'+stepHint+'</div>'
+   +'<button class="case-hunch">'+t("hunch")+' ✦</button></div>'
+   +'<div class="bwrap" id="bwrap"><div class="bframe"></div><svg class="strings" id="strings"></svg><div id="pinlayer"></div></div>';
+  paintCasePins(c,st); paintCaseStrings();
+  el.querySelector(".case-back").onclick=function(){ exitToCasebook(); };
+  el.querySelectorAll(".evchip").forEach(function(b){ b.onclick=function(){ examineEvidence(b.dataset.ev); }; });
+  el.querySelector(".case-hunch").onclick=function(){ useHunch(); };
+  el.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){setLang(b.dataset.l);});});
+  el.querySelector(".mutebtn").addEventListener("click",function(){setMuted(!state.muted);});
+  wireResize();
+}
+function paintCasePins(c,st){
+  var pl=document.getElementById("pinlayer"); if(!pl)return; pl.innerHTML="";
+  var active={};
+  if(st.kind==="accuse") st.suspects.forEach(function(p){active[p]=1;});
+  else if(st.kind==="connect") st.links.forEach(function(L){active[L[0]]=1;active[L[1]]=1;});
+  BOARD_PINS.forEach(function(p){
+    var d=document.createElement("div");
+    d.className="pin "+p.kind+(active[p.id]?" suspect":" dim");
+    d.dataset.pin=p.id; d.style.left=p.x+"%"; d.style.top=p.y+"%";
+    d.style.transform="translate(-50%,-50%) rotate("+p.rot+"deg)";
+    d.innerHTML='<span class="tack" style="background:'+p.tack+'"></span>'+pinInner(p);
+    if(active[p.id]){ d.tabIndex=0; d.setAttribute("role","button");
+      d.addEventListener("click",function(){ onCasePinTap(p.id); });
+      d.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); onCasePinTap(p.id); } });
+    }
+    pl.appendChild(d);
+  });
+}
+function linkPath(aId,bId,color,sw,w){
+  var A=pinById(aId),B=pinById(bId); if(!A||!B)return"";
+  var ax=A.x/100*w.clientWidth,ay=A.y/100*w.clientHeight,bx=B.x/100*w.clientWidth,by=B.y/100*w.clientHeight;
+  var mx=(ax+bx)/2,my=(ay+by)/2+22;
+  return '<path d="M'+ax+' '+ay+' Q'+mx+' '+my+' '+bx+' '+by+'" fill="none" stroke="'+color+'" stroke-width="'+sw+'" stroke-linecap="round" class="caseline"/>'
+   +'<circle cx="'+ax+'" cy="'+ay+'" r="2.6" fill="'+color+'"/><circle cx="'+bx+'" cy="'+by+'" r="2.6" fill="'+color+'"/>';
+}
+function paintCaseStrings(){
+  var w=document.getElementById("bwrap"),svg=document.getElementById("strings");
+  if(!w||!svg)return;
+  if(w.clientWidth===0){ requestAnimationFrame(paintCaseStrings); return; }
+  svg.setAttribute("viewBox","0 0 "+w.clientWidth+" "+w.clientHeight);
+  var html="";
+  litThreads().forEach(function(thId){
+    var th=THREADS.filter(function(x){return x.id===thId;})[0];
+    for(var i=0;i<th.pinIds.length-1;i++) html+=linkPath(th.pinIds[i],th.pinIds[i+1],th.color,2.4,w);
+  });
+  caseLinks.forEach(function(L){ html+=linkPath(L[0],L[1],"#c0352a",2.6,w); });
+  svg.innerHTML=html;
+}
+function onCasePinTap(pinId){
+  var st=activeCaseData.steps[state.cases.step];
+  if(st.kind==="accuse") doAccuse(pinId);
+  else if(st.kind==="connect") doConnectTap(pinId);
+}
+function flashWrongPin(pinId){ var d=document.querySelector('.pin[data-pin="'+pinId+'"]'); if(d){d.classList.add("wrong");setTimeout(function(){d.classList.remove("wrong");},420);} }
+function markPinSelected(pinId,on){ var d=document.querySelector('.pin[data-pin="'+pinId+'"]'); if(d)d.classList.toggle("selected",on); }
+function registerWrong(){ caseCost.wrong++; sfx("buzz");
+  if(caseCost.wrong>=3){ verdictOverlay(false,(lang==="zh"?"线索不足以定案——看看到底发生了什么。":"Not enough to charge — see what actually happened."),true,null); return true; }
+  return false;
+}
+function doAccuse(pinId){
+  var st=activeCaseData.steps[state.cases.step];
+  if(accuseCorrect(st,pinId)){ sfx("stamp"); verdictOverlay(true,(lang==="zh"?st.becauseZh:st.becauseEn),false,advanceStep); }
+  else { flashWrongPin(pinId); registerWrong(); }
+}
+function doConnectTap(pinId){
+  var st=activeCaseData.steps[state.cases.step];
+  if(connTap===null){ connTap=pinId; markPinSelected(pinId,true); return; }
+  if(connTap===pinId){ markPinSelected(pinId,false); connTap=null; return; }
+  var from=connTap,to=pinId; markPinSelected(from,false); connTap=null;
+  if(linkExpectedAt(st,stepProgress,from,to)){
+    caseLinks.push([from,to]); stepProgress++; sfx("pluck"); paintCaseStrings();
+    if(stepProgress>=st.links.length){ verdictOverlay(true,(lang==="zh"?st.becauseZh:st.becauseEn),false,advanceStep); }
+  } else { flashWrongPin(from); flashWrongPin(to); registerWrong(); }
+}
+function doPredict(st){
+  var d=document.getElementById("dossier");
+  var opts=st.options.map(function(o,i){return '<button class="predopt" data-i="'+i+'">'+(lang==="zh"?o.labelZh:o.labelEn)+'</button>';}).join("");
+  d.innerHTML='<div class="predict"><div class="predq">'+(lang==="zh"?st.promptZh:st.promptEn)+'</div><div class="predopts">'+opts+'</div><div class="predtag">'+t("callIt")+'</div></div>';
+  d.onclick=null; d.classList.remove("hidden");
+  d.querySelectorAll(".predopt").forEach(function(b){ b.onclick=function(){
+    var i=+b.dataset.i, okFlag=(i===st.answer); recordInstinct(okFlag); b.classList.add(okFlag?"good":"bad");
+    d.querySelectorAll(".predopt").forEach(function(x){x.onclick=null;});
+    setTimeout(function(){ d.classList.add("hidden"); advanceStep(); },700);
+  };});
+}
+function verdictOverlay(ok,because,autoReveal,onContinue){
+  var d=document.getElementById("dossier");
+  var stamp=ok?t("caseClosed"):t("coldCase"), btn=ok?"&#9656;":t("revealNow");
+  d.innerHTML='<div class="verdict '+(ok?"ok":"cold")+'"><div class="stamp">'+stamp+'</div>'
+   +(because?'<p class="vbecause"><b>'+t("becauseLab")+':</b> '+because+'</p>':'')
+   +'<button class="vbtn">'+btn+'</button></div>';
+  d.onclick=null; d.classList.remove("hidden");
+  d.querySelector(".vbtn").onclick=function(){ d.classList.add("hidden");
+    if(ok){ if(onContinue) onContinue(); }
+    else if(autoReveal){ softSolveAndReveal(); }
+  };
+}
+function solveCase(){
+  var c=activeCaseData, id=c.id, prev=state.cases.solved[id];
+  var rating=ratingFromCost(caseCost.wrong,caseCost.hints); if(prev&&prev.rating>rating)rating=prev.rating;
+  state.cases.solved[id]={rating:rating,wrong:caseCost.wrong,hints:caseCost.hints};
+  state.cases.current=null; save();
+  playReveal((c.revealSeq||[]).slice(), function(){ if(id==="c7-fog") renderFinalVerdict(); else exitToCasebook(); });
+}
+function softSolveAndReveal(){
+  var c=activeCaseData, id=c.id, prev=state.cases.solved[id];
+  var rating=prev?Math.max(prev.rating,1):1;
+  state.cases.solved[id]={rating:rating,wrong:caseCost.wrong,hints:caseCost.hints};
+  state.cases.current=null; save();
+  playReveal((c.revealSeq||[]).slice(), function(){ if(id==="c7-fog") renderFinalVerdict(); else exitToCasebook(); });
+}
+function examineEvidence(sceneId){
+  state.cases.examined[sceneId]=1; save();
+  sceneCtx={mode:"evidence"};
+  curBeat=sceneId; var sc=sceneById(sceneId); startAmbient(sc?sc.season:0); sfx("enter");
+  showOnly("scene"); view="scene"; renderScene(sceneId);
+}
+function backToCaseBoard(){ stopAmbient(); sceneCtx=null; showOnly("board"); view="board"; renderBoard(); }
+function playReveal(seq,done){
+  if(!seq||!seq.length){ if(done)done(); return; }
+  var id=seq.shift();
+  sceneCtx={mode:"reveal", remaining:seq, done:done};
+  curBeat=id; state.visited[id]=1; var sc=sceneById(id); startAmbient(sc?sc.season:0); sfx("enter"); save();
+  showOnly("scene"); view="scene"; renderScene(id);
+}
+function useHunch(){
+  var c=activeCaseData, st=c.steps[state.cases.step]; if(!st)return; caseCost.hints++;
+  if(st.kind==="accuse"){
+    var wrong=st.suspects.filter(function(p){return p!==st.answer;});
+    if(wrong.length){ var victim=wrong[0]; st.suspects=st.suspects.filter(function(p){return p!==victim;});
+      var dd=document.querySelector('.pin[data-pin="'+victim+'"]'); if(dd){dd.className="pin "+pinById(victim).kind+" dim"; dd.onclick=null; dd.onkeydown=null;} }
+  } else if(st.kind==="connect"){ var next=st.links[stepProgress]; if(next) markPinSelected(next[0],true); }
+  sfx("tick");
+}
+function renderCasebook(){
+  showOnly("casebook");
+  var inst=state.instinct.total?(t("instinctLab")+" "+state.instinct.correct+"/"+state.instinct.total):"";
+  var cards=CASES.map(function(c){
+    var stt=caseStatus(c.id), sv=state.cases.solved[c.id];
+    var stars=sv?("★★★".slice(0,sv.rating)+"☆☆☆".slice(0,3-sv.rating)):"";
+    var sub=stt==="solved"?(t("solvedLab")+" "+stars):stt==="locked"?t("lockedLab"):"";
+    return '<button class="ccard '+stt+'" data-c="'+c.id+'"'+(stt==="locked"?" disabled":"")+'>'
+      +'<span class="cno">'+c.no+'</span><span class="cttl">'+(lang==="zh"?c.titleZh:c.titleEn)+'</span>'
+      +'<span class="csub">'+sub+'</span></button>';
+  }).join("");
+  var el=document.getElementById("casebook");
+  el.innerHTML='<div class="cb-head"><button class="cb-back">&#9664; '+t("freeBrowse")+'</button><h2>'+t("casebook")+'</h2><div class="cb-inst">'+inst+'</div></div>'
+   +'<div class="cb-grid">'+cards+'</div>';
+  el.querySelectorAll(".ccard:not(.locked)").forEach(function(b){ b.onclick=function(){ openCase(b.dataset.c); }; });
+  el.querySelector(".cb-back").onclick=function(){ enterBoard(); };
+}
+function renderFinalVerdict(){
+  showOnly("casebook"); var el=document.getElementById("casebook");
+  var solved=Object.keys(state.cases.solved).length;
+  var totRating=CASES.reduce(function(a,c){var s=state.cases.solved[c.id];return a+(s?s.rating:0);},0);
+  var line=lang==="zh"?"卷宗已满,指控却终未落槌。Tommy Shelby——那个不朽之人——骑马遁入晨雾,逍遥法外。":"The file is full, yet the charge never lands. Tommy Shelby — the Immortal Man — rides into the mist, and walks free.";
+  el.innerHTML='<div class="final"><h2>'+t("finalVerdict")+'</h2>'
+   +'<div class="final-stats">'+solved+'/7 · ★ '+totRating+'/21 · '+t("instinctLab")+' '+state.instinct.correct+'/'+state.instinct.total+'</div>'
+   +'<p class="final-line">'+line+'</p><button class="vbtn" id="final-done">'+t("casebook")+'</button></div>';
+  el.querySelector("#final-done").onclick=function(){ renderCasebook(); };
+}
 function renderFamilyNode(node){
  var c=charById(node.c); var nm=c?(lang==="zh"?c.nameZh:c.nameEn):node.c;
  var rel=node.rel?(' <span class="rel">'+(lang==="zh"?node.rel.zh:node.rel.en)+'</span>'):'';
@@ -764,7 +1283,7 @@ var PROP_MAP={
 function seasonLabel(s){var z=["序幕","第一季","第二季","第三季","第四季","第五季","第六季","终幕"][s];
  var e=["Prologue","Series 1","Series 2","Series 3","Series 4","Series 5","Series 6","Finale"][s];
  return (lang==="zh"?z:e);}
-function openScene(sceneId){ curBeat=sceneId; state.lastBeat=sceneId; state.visited[sceneId]=1; save();
+function openScene(sceneId){ sceneCtx=null; curBeat=sceneId; state.lastBeat=sceneId; state.visited[sceneId]=1; save();
  var _sc=sceneById(sceneId); startAmbient(_sc?_sc.season:0); sfx("enter");
  setView("scene"); renderScene(sceneId); }
 function renderScene(sceneId){
@@ -784,6 +1303,20 @@ function renderScene(sceneId){
  el.querySelector(".sc-back").onclick=function(){backToBoard();};
  var pv=el.querySelector(".sc-prev2"); if(pv)pv.onclick=function(){stepScene(-1);};
  el.querySelector(".sc-prop").onclick=function(){sfx(pm.kind);stepScene(1);};
+ if(sceneCtx){
+   var _prop=el.querySelector(".sc-prop"), _lab=_prop?_prop.querySelector(".lab"):null, _back=el.querySelector(".sc-back"), _pv=el.querySelector(".sc-prev2");
+   if(_pv) _pv.style.display="none";
+   if(sceneCtx.mode==="evidence"){
+     if(_lab)_lab.innerHTML=(lang==="zh"?"返回案卷":"back to the case")+' &#8594;';
+     if(_prop)_prop.onclick=function(){ sfx("tick"); backToCaseBoard(); };
+     if(_back)_back.onclick=function(){ backToCaseBoard(); };
+   } else if(sceneCtx.mode==="reveal"){
+     var _more=sceneCtx.remaining&&sceneCtx.remaining.length;
+     if(_lab)_lab.innerHTML=(lang==="zh"?(_more?"继续":"结案归档"):(_more?"go on":"file the case"))+' &#8594;';
+     if(_prop)_prop.onclick=function(){ var rem=sceneCtx.remaining, dn=sceneCtx.done; sceneCtx=null; sfx("tick"); playReveal(rem,dn); };
+     if(_back)_back.onclick=function(){ var dn=sceneCtx?sceneCtx.done:null; sceneCtx=null; if(dn)dn(); };
+   }
+ }
  requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add("in");});});
 }
 var view="board";
@@ -832,15 +1365,18 @@ function SVG_COVER(){
 }
 function renderTitle(){
  var el=document.getElementById("title");
- var resume=state.lastBeat? '<button class="t-resume">'+t("resume")+' &#8250;</button>':'';
+ var canResume=state.cases.current||state.lastBeat;
+ var resume=canResume? '<button class="t-resume">'+t("resume")+' &#8250;</button>':'';
  el.innerHTML='<div class="t-bg">'+SVG_COVER()+'</div><div class="t-fg"><h1 class="t-h">浴血黑帮 · 卷宗</h1><div class="t-sub">'+t("subtitle")+'</div>'
-  +'<button class="t-start">'+t("start")+' &#9656;</button>'+resume
+  +'<button class="t-start">'+t("investigate")+' &#9656;</button>'
+  +'<button class="t-free">'+t("freeBrowse")+'</button>'+resume
   +'<div class="lang" style="margin-top:22px"><button data-l="zh"'+(lang==="zh"?' class="active"':'')+'>中</button><button data-l="en"'+(lang==="en"?' class="active"':'')+'>EN</button></div></div>';
- el.querySelector(".t-start").onclick=function(){enterBoard();};
- var rb=el.querySelector(".t-resume"); if(rb)rb.onclick=function(){enterBoard();openScene(state.lastBeat);};
+ el.querySelector(".t-start").onclick=function(){renderCasebook();};
+ var fb=el.querySelector(".t-free"); if(fb)fb.onclick=function(){enterBoard();};
+ var rb=el.querySelector(".t-resume"); if(rb)rb.onclick=function(){ if(state.cases.current) openCase(state.cases.current); else { enterBoard(); openScene(state.lastBeat); } };
  el.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){lang=b.dataset.l;state.lang=lang;save();renderTitle();});});
 }
-function enterBoard(){ document.getElementById("title").classList.add("hidden"); renderBoard(); document.getElementById("board").classList.remove("hidden"); view="board"; }
+function enterBoard(){ boardMode="free"; activeCase=null; activeCaseData=null; sceneCtx=null; showOnly("board"); renderBoard(); view="board"; }
 function boot(){ load(); console.assert(__selftest()==="PASS","selftest"); renderTitle(); }
 boot();
 </script>
